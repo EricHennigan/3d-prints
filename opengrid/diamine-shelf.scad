@@ -4,26 +4,91 @@ include <snap.scad>
 
 /* [Diamine Ink Bottle] */
 
+// WARNING: x and y may not correspond to gridX gridY
 base_x = 27;
 base_y = 27;
 fillet = 3;
+wall_thickness = .45;
+
+cap_radius = 21 / 2;
+clip_thickness = 3;
+
+y_offset = (base_y + wall_thickness) / 2;  // center of the bottle
 
 module shelf() {
-    margin = .45;
-    clearance = 0.2;
+    clearance = 0.05;
+    height = 7;
 
-    assert(base_x + 2 * margin < gridX, "overflow to grid neighbor X");
-    assert(base_y + 2 * margin < gridY, "overflow to grid neighbor Y");
+    assert(base_x + 2 * wall_thickness < gridX - 0.05, "overflow to grid neighbor X");
+    assert(base_y + 2 * wall_thickness < gridY - 0.05, "overflow to grid neighbor Y");
 
-    ymove((base_y + margin) / 2)
+    assert((gridY - tileY) / 2 > 1.01, "overflow to grid neighbor")
+    union() {
+        zmove(tileY/2)
+        yrot(180)
+        snap(nub_directional=true);
+
+        zmove(-.4) // the height nub on the snap
+        ymove(y_offset + wall_thickness/2)
+        difference() {
+            cuboid([base_x + 2*wall_thickness, base_y + 2*wall_thickness, height],
+                   anchor=BOTTOM);
+
+            zmove(2)
+            cuboid([base_x + clearance, base_y + clearance, height+.01],
+                   anchor=BOTTOM, rounding=fillet,
+                   edges=[BOTTOM, "Z"], $fn=32);
+        }
+    }
+    // TODO: add chamfer 45deg on the front, for print orientation?
+    //       or line up a 45def chamfer on the back with corner of the snap?
+    //       that option would have better balance when printing
+    // noticed that the bottom nub doesn't print well, meaning it snaps poorly into grid
+}
+
+module clip() {
+    clearance = 0.5; // distance from ink cap
+
+    outer = cap_radius + 2;
+    inner = cap_radius - clearance;
+    cut_r = .9 * cap_radius;
+
+    //%yrot(180) zmove(-tileY/4 + clip_thickness/2) snap(nub_directional=true);
+
+    ymove(y_offset)
     difference() {
-        cuboid([base_x + margin, base_y + margin, 5], anchor=BOTTOM);
-        zmove(2) cuboid([base_x + clearance, base_y + clearance, 5], anchor=BOTTOM, rounding=fillet, edges=[BOTTOM, "Z"], $fn=32);
+        union() {
+            cylinder(r=outer, h=clip_thickness, anchor=CENTER);
+            cuboid([2*outer, y_offset + gridZ, clip_thickness], anchor=BACK);
+        }
+        cylinder(r=cap_radius-clearance, h=clip_thickness+.01, anchor=CENTER);
+        cylinder(r=cut_r, h=clip_thickness+.01, anchor=FRONT);
+        ymove(-y_offset - 2*gridZ/3)
+            cuboid([gridX/3, gridZ+inner, clip_thickness+.01], anchor=FRONT);
     }
 }
 
-union() {
-  zmove(tileY/2) snap();
-  assert((gridY - tileY) / 2 > 1.01)
-  zmove(-1) shelf();
+module clip_mount() {
+    clearance = 0.1; // distance between parts
+
+    difference() {
+        union() {
+            yrot(180)
+            zmove(-tileY/4 + clip_thickness/2)
+            snap(nub_directional=true);
+
+            // add support for the relief, TODO: synchronize the variables with snap.scad
+            move([ tileX/2, -1, gridZ/3+0.2]) cuboid([.6, .4, .4], anchor=BOTTOM+RIGHT);
+            move([-tileX/2, -1, gridZ/3+0.2]) cuboid([.6, .4, .4], anchor=BOTTOM+LEFT);
+        }
+
+        // chop out the corresponding parts of the clip
+        xmove( 2*gridX/3) cuboid([gridX, gridZ, clip_thickness + clearance], anchor=BACK);
+        xmove(-2*gridX/3) cuboid([gridX, gridZ, clip_thickness + clearance], anchor=BACK);
+        ymove(-gridZ)
+            cuboid([gridX, gridZ/3 + clearance, clip_thickness + clearance], anchor=FRONT);
+    }
 }
+
+clip();
+clip_mount();

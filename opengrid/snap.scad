@@ -53,7 +53,7 @@ module nub(pos) {
 }
 
 // 'lite' only
-module relief(pos) {
+module relief(pos, nub_directional=nub_directional) {
     r = 0.6 / 2; // global rounding, corresponds to draw_v.d
     
     module draw_v() {
@@ -95,7 +95,9 @@ module relief(pos) {
 }
 
 // 'lite' only
-module snap() {
+module snap(
+    nub_directional=nub_directional,
+) {
     top = -0.4;
     mid = -1.1;
     bot = -gridZ;
@@ -117,9 +119,9 @@ module snap() {
             if (nub_bottom) nub("bottom");
         }
         // Cut out the strain reliefs
-        if (nub_right) relief("right");
-        if (nub_left) relief("left");
-        if (nub_top) relief("top");
-        if (nub_bottom) relief("bottom");
+        if (nub_right) relief("right", nub_directional=nub_directional);
+        if (nub_left) relief("left", nub_directional=nub_directional);
+        if (nub_top) relief("top", nub_directional=nub_directional);
+        if (nub_bottom) relief("bottom", nub_directional=nub_directional);
     }
 }
