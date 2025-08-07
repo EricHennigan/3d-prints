@@ -53,8 +53,7 @@ module clip() {
     inner = cap_radius - clearance;
     cut_r = .9 * cap_radius;
 
-    //%yrot(180) zmove(-tileY/4 + clip_thickness/2) snap(nub_directional=true);
-
+    up(clip_thickness/2)
     ymove(y_offset)
     difference() {
         union() {
@@ -71,24 +70,25 @@ module clip() {
 module clip_mount() {
     clearance = 0.1; // distance between parts
 
-    difference() {
-        union() {
+    union() {
+        difference() {
+            up(tileY/2 - 4.82) // TODO: sync number from snap, review it with FreeCAD
             yrot(180)
-            zmove(-tileY/4 + clip_thickness/2)
             snap(nub_directional=true);
-
-            // add support for the relief, TODO: synchronize the variables with snap.scad
-            move([ tileX/2, -1, gridZ/3+0.2]) cuboid([.6, .4, .4], anchor=BOTTOM+RIGHT);
-            move([-tileX/2, -1, gridZ/3+0.2]) cuboid([.6, .4, .4], anchor=BOTTOM+LEFT);
+            cuboid([gridY, gridZ, clip_thickness+clearance], anchor=BOTTOM+BACK);
         }
 
-        // chop out the corresponding parts of the clip
-        xmove( 2*gridX/3) cuboid([gridX, gridZ, clip_thickness + clearance], anchor=BACK);
-        xmove(-2*gridX/3) cuboid([gridX, gridZ, clip_thickness + clearance], anchor=BACK);
-        ymove(-gridZ)
-            cuboid([gridX, gridZ/3 + clearance, clip_thickness + clearance], anchor=FRONT);
+        // add support for the relief
+        // TODO: synchronize the variables with snap.scad
+        move([ tileY/2, -1, clip_thickness+clearance])
+            cuboid([.6, .4, .4], anchor=BOTTOM+RIGHT);
+        move([-tileY/2, -1, clip_thickness+clearance])
+            cuboid([.6, .4, .4], anchor=BOTTOM+LEFT);
+        // restore a support from the clip
+        cuboid([gridX/3-clearance, 2*gridZ/3-clearance, clip_thickness+clearance], anchor=BOTTOM+BACK);
     }
 }
 
+
 clip();
-clip_mount();
+%clip_mount();
