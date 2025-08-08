@@ -62,7 +62,7 @@ module clip() {
         }
         cylinder(r=cap_radius-clearance, h=clip_thickness+.01, anchor=CENTER);
         cylinder(r=cut_r, h=clip_thickness+.01, anchor=FRONT);
-        ymove(-y_offset - 2*gridZ/3)
+        ymove(-y_offset - gridZ/2)
             cuboid([gridX/3, gridZ+inner, clip_thickness+.01], anchor=FRONT);
     }
 }
@@ -85,10 +85,10 @@ module clip_mount() {
         move([-tileY/2, -1, clip_thickness+clearance])
             cuboid([.6, .4, .4], anchor=BOTTOM+LEFT);
         // restore a support from the clip
-        cuboid([gridX/3-clearance, 2*gridZ/3-clearance, clip_thickness+clearance], anchor=BOTTOM+BACK);
+        cuboid([gridX/3-clearance, gridZ/2-clearance, clip_thickness+clearance], anchor=BOTTOM+BACK);
     }
 }
 
 
 clip();
-%clip_mount();
+clip_mount();
