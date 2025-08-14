@@ -15,6 +15,13 @@ Lite_Thickness = 4.0;
 Tile_Thickness = Board_Style == "Full" ? Full_Thickness : Lite_Thickness;
 Tile_Size = 28;
 
+/* [Chamfer and Connector Options] */
+Chamfer_TL = true;
+Chamfer_TR = true;
+Chamfer_BL = true;
+Chamfer_BR = true;
+
+
 module grid(
     boardWidth = Board_Width,
     boardHeight = Board_Height,
@@ -24,16 +31,27 @@ module grid(
     spin = 0,
     orient = UP,
 ) {
-    // TODO: add screw holes
-    // TODO: add chamfers
-    // TODO: add connector pins
-    // TODO: add anchors
-    difference() {
-        cuboid([tileSize * boardWidth, tileSize * boardHeight, tileThickness]);
-        union() {
-            grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
-            cut_tile(tileSize, tileThickness);
+    boardSize = tileSize * boardWidth;
+    
+    chamfers = [
+      Chamfer_TL ? BACK+RIGHT: 0,
+      Chamfer_TR ? BACK+LEFT : 0,
+      Chamfer_BL ? FRONT+RIGHT : 0,
+      Chamfer_BR ? FRONT+LEFT : 0,
+    ];
+    
+    attachable(anchor, spin, orient, size=[boardSize, boardSize, tileThickness]) {
+        difference() {
+            cuboid([boardSize, boardSize, tileThickness], chamfer=4.2, edges=chamfers);
+            union() {
+                grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
+                cut_tile(tileSize, tileThickness);
+                
+                // TODO: cut connector pins
+                // TODO: cut screw holes
+            }
         }
+        children();
     }
 }
 
@@ -69,17 +87,17 @@ module cut_tile(
     function make_profile(params) = 
         rect([tileSize - 2*params[_width], tileSize-2*params[_width]], chamfer = params[_chamfer]);
     
-    attachable(anchor, spin, orient, size=[tileSize, tileSize, tileThickness]) {
-        down((Full_Thickness - tileThickness) + tileThickness/2)
-            skin(profiles = [for(p = profile_params) make_profile(p)],
-                 z = [for(p = profile_params) p[_height]],
-                 slices = 0,
-            );
-        children();
+    render() {
+        attachable(anchor, spin, orient, size=[tileSize, tileSize, tileThickness]) {
+            down((Full_Thickness - tileThickness) + tileThickness/2)
+                skin(profiles = [for(p = profile_params) make_profile(p)],
+                     z = [for(p = profile_params) p[_height]],
+                     slices = 0,
+                );
+            children();
+        }
     }
 }
 
 //cut_tile() show_anchors();
 grid();
-
-
