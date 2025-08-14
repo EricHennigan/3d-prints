@@ -1,6 +1,7 @@
 
 include <BOSL2/std.scad>
 
+// TODO: add support for BOM
 trim = 0.001;
 
 /* [Board Size] */
@@ -19,14 +20,18 @@ module grid(
     boardHeight = Board_Height,
     tileSize = Tile_Size,
     tileThickness = Tile_Thickness,
+    anchor = CENTER,
+    spin = 0,
+    orient = UP,
 ) {
     // TODO: add screw holes
     // TODO: add chamfers
     // TODO: add connector pins
+    // TODO: add anchors
     difference() {
         cuboid([tileSize * boardWidth, tileSize * boardHeight, tileThickness]);
         union() {
-            grid_copies(spacing=tileSize+0.5, n=[boardWidth, boardHeight])
+            grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
             cut_tile(tileSize, tileThickness);
         }
     }
@@ -44,11 +49,11 @@ module cut_tile(
     orient = UP,
 ) {
     _height = 0;
-    _reduction = 1;
+    _width = 1;
     _chamfer = 2;
     
     // grabbed these numbers from openGrid model in FreeCAD
-    profile = [
+    profile_params = [
         [-trim, 1.1, 3.70],
         [  0, 1.1, 3.70],
         [0.4, 1.5, 3.46],
@@ -60,28 +65,21 @@ module cut_tile(
         [6.8, 1.1, 3.70],
         [6.8+trim, 1.1, 3.70],
     ];
-
-    // The LITE version is just a chopped off FULL version
+    
+    function make_profile(params) = 
+        rect([tileSize - 2*params[_width], tileSize-2*params[_width]], chamfer = params[_chamfer]);
+    
     attachable(anchor, spin, orient, size=[tileSize, tileSize, tileThickness]) {
         down((Full_Thickness - tileThickness) + tileThickness/2)
-        union() {
-            for(i = [0:len(profile)-2]) {
-                d0 = profile[i];
-                ts0 = tileSize - 2*d0[_reduction];
-                r0 = rect([ts0, ts0], chamfer = d0[_chamfer]);
-                
-                d1 = profile[i+1];
-                ts1 = tileSize - 2*d1[_reduction];
-                r1 = rect([ts1, ts1], chamfer = d1[_chamfer]);
-                
-                skin([r0, r1], z = [d0[_height], d1[_height]+trim], slices = 0);
-            }
-            // TODO: add a chamfer at the tileThickness
-            //       or always print TOP facing buildplate (elephants foot)
-        }
+            skin(profiles = [for(p = profile_params) make_profile(p)],
+                 z = [for(p = profile_params) p[_height]],
+                 slices = 0,
+            );
         children();
     }
 }
 
 //cut_tile() show_anchors();
 grid();
+
+
