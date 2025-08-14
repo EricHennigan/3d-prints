@@ -15,7 +15,7 @@ Lite_Thickness = 4.0;
 Tile_Thickness = Board_Style == "Full" ? Full_Thickness : Lite_Thickness;
 Tile_Size = 28;
 
-/* [Chamfer and Connector Options] */
+/* [Chamfer Options] */
 Chamfer_TL = true;
 Chamfer_TR = true;
 Chamfer_BL = true;
@@ -54,6 +54,8 @@ module grid(
         children();
     }
 }
+// grid();
+
 
 // Note: cut_tile Z anchor points are at tileThickness
 //           though cutting object is always greater, at Full size and trim above
@@ -98,6 +100,29 @@ module cut_tile(
         }
     }
 }
+// cut_tile() show_anchors();
 
-//cut_tile() show_anchors();
-grid();
+
+module lite_connector() {
+    // TODO: could not get the outside fillet on that dimple!
+    module p() {
+        round2d(ir=0.5) {
+            xmove(2.5) ring(r1=2.5, r2=1.7, angle=[0,90]);
+            ymove(2.5) xmove(2.5) rect([1.15, 0.8], anchor=RIGHT+BACK);
+            ymove(3.25+2.5-.25) ring(r1=4.05, r2=3.25, angle=[270,291]);
+            rect([0.6, 1.7], anchor=LEFT+FRONT);
+        }
+    }
+    render($fn=60) {
+        linear_extrude(height=2.2)
+        yflip_copy() {
+            union() {
+                xflip_copy() {
+                    p();
+                }
+            }
+        }
+    }
+}
+lite_connector() show_anchors();
+
