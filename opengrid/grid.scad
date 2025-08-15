@@ -21,6 +21,11 @@ Chamfer_TR = true;
 Chamfer_BL = true;
 Chamfer_BR = true;
 
+/* [Connector Options] */
+Connectors_T = true;
+Connectors_R = true;
+Connectors_B = true;
+Connectors_L = true;
 
 module grid(
     boardWidth = Board_Width,
@@ -30,31 +35,54 @@ module grid(
     anchor = CENTER,
     spin = 0,
     orient = UP,
+    chamfers = [Chamfer_TR, Chamfer_BR, Chamfer_BL, Chamfer_TL],
+    connectors = [Connectors_T, Connectors_R, Connectors_B, Connectors_L],
 ) {
-    boardSize = tileSize * boardWidth;
+    boardSizeW = tileSize * boardWidth;
+    boardSizeH = tileSize * boardHeight;
     
-    chamfers = [
-      Chamfer_TL ? BACK+RIGHT: 0,
-      Chamfer_TR ? BACK+LEFT : 0,
-      Chamfer_BL ? FRONT+RIGHT : 0,
-      Chamfer_BR ? FRONT+LEFT : 0,
+    chamfer_edges = [
+      chamfers[0] ? BACK+RIGHT : [0],
+      chamfers[1] ? FRONT+RIGHT : [0],
+      chamfers[2] ? FRONT+LEFT : [0],
+      chamfers[3] ? BACK+LEFT: [0],
     ];
     
-    attachable(anchor, spin, orient, size=[boardSize, boardSize, tileThickness]) {
+    attachable(anchor, spin, orient, size=[boardSizeW, boardSizeH, tileThickness]) {
         difference() {
-            cuboid([boardSize, boardSize, tileThickness], chamfer=4.2, edges=chamfers);
+            cuboid([boardSizeW, boardSizeH, tileThickness], chamfer=4.2, edges=chamfer_edges);
             union() {
                 grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
                 cut_tile(tileSize, tileThickness);
                 
-                // TODO: cut connector pins
+                if (connectors[0]) { // top
+                    ymove(boardSizeH/2)
+                    xcopies(n=boardWidth-1, spacing=tileSize)
+                    cut_connector(spin=180, anchor=FRONT);
+                }
+                if (connectors[1]) { // right
+                    xmove(boardSizeW/2)
+                    ycopies(n=boardHeight-1, spacing=tileSize)
+                    cut_connector(spin=90, anchor=FRONT);
+                }
+                if (connectors[2]) { // bottom
+                    ymove(-boardSizeH/2)
+                    xcopies(n=boardWidth-1, spacing=tileSize)
+                    cut_connector(spin=0, anchor=FRONT);
+                }
+                if (connectors[3]) { // left
+                    xmove(-boardSizeW/2)
+                    xcopies(n=boardHeight-1, spacing=tileSize)
+                    cut_connector(spin=270, anchor=FRONT);
+                }
+                
                 // TODO: cut screw holes
             }
         }
         children();
     }
 }
-// grid();
+//grid();
 
 
 // Note: cut_tile Z anchor points are at tileThickness
@@ -103,9 +131,49 @@ module cut_tile(
 // cut_tile() show_anchors();
 
 
+// LITE and FULL have the same connector socket
+module cut_connector(
+    anchor = CENTER,
+    spin = 0,
+    orient = UP,
+) {
+    height = 2.4;
+    width = 5.2;
+    depth = 5.10;
+    
+    // numbers measured in FreeCAD
+    module quarter() {
+        path = turtle([
+            "left", 90,
+            "move", depth,
+            "left", 90,
+            "arcleft", width/2, 90,
+            "move", 1.14,
+            "arcleft", 0.5, 24.25,
+            "arcright", 2.8, 18.8, // a bit extra to extend front face extend past anchor
+            "arcright", 0.25, 95.5,
+        ]);
+        polygon(path);
+    }
+    attachable(anchor, spin, orient, size=[width, depth, height]) {
+        render($fn=60) {
+            ymove(-depth/2)
+            zmove(-height/2)
+            linear_extrude(height=height)
+            xflip_copy() {
+                quarter();
+            }
+        }
+        children();
+    }
+}
+//cut_connector(anchor=FRONT) show_anchors(s=1);
+
+
 module lite_connector() {
+    // TODO: add attachments
     // TODO: could not get the outside fillet on that dimple!
-    module p() {
+    module quarter() {
         round2d(ir=0.5) {
             xmove(2.5) ring(r1=2.5, r2=1.7, angle=[0,90]);
             ymove(2.5) xmove(2.5) rect([1.15, 0.8], anchor=RIGHT+BACK);
@@ -118,11 +186,10 @@ module lite_connector() {
         yflip_copy() {
             union() {
                 xflip_copy() {
-                    p();
+                    quarter();
                 }
             }
         }
     }
 }
-lite_connector() show_anchors();
-
+//lite_connector() show_anchors();
