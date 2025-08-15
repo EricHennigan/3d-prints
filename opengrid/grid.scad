@@ -32,11 +32,11 @@ module grid(
     boardHeight = Board_Height,
     tileSize = Tile_Size,
     tileThickness = Tile_Thickness,
+    chamfers = [Chamfer_TR, Chamfer_BR, Chamfer_BL, Chamfer_TL],
+    connectors = [Connectors_T, Connectors_R, Connectors_B, Connectors_L],
     anchor = CENTER,
     spin = 0,
     orient = UP,
-    chamfers = [Chamfer_TR, Chamfer_BR, Chamfer_BL, Chamfer_TL],
-    connectors = [Connectors_T, Connectors_R, Connectors_B, Connectors_L],
 ) {
     boardSizeW = tileSize * boardWidth;
     boardSizeH = tileSize * boardHeight;
@@ -79,7 +79,7 @@ module grid(
                 if (connectors[3]) { // left
                     zmove(tileThickness/2 - connector_offset)
                     xmove(-boardSizeW/2)
-                    xcopies(n=boardHeight-1, spacing=tileSize)
+                    ycopies(n=boardHeight-1, spacing=tileSize)
                         cut_connector(spin=270, anchor=FRONT+TOP);
                 }
                 
