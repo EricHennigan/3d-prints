@@ -48,32 +48,39 @@ module grid(
       chamfers[3] ? BACK+LEFT: [0],
     ];
     
+    // affine transform: 1 at Lite, 2.2 at Full
+    connector_offset = (1.2/2.8)*tileThickness + (1-4*(1.2/2.8));
+    
     attachable(anchor, spin, orient, size=[boardSizeW, boardSizeH, tileThickness]) {
         difference() {
             cuboid([boardSizeW, boardSizeH, tileThickness], chamfer=4.2, edges=chamfer_edges);
             union() {
                 grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
-                cut_tile(tileSize, tileThickness);
+                    cut_tile(tileSize, tileThickness);
                 
                 if (connectors[0]) { // top
+                    zmove(tileThickness/2 - connector_offset)
                     ymove(boardSizeH/2)
                     xcopies(n=boardWidth-1, spacing=tileSize)
-                    cut_connector(spin=180, anchor=FRONT);
+                        cut_connector(spin=180, anchor=FRONT+TOP);
                 }
                 if (connectors[1]) { // right
+                    zmove(tileThickness/2 - connector_offset)
                     xmove(boardSizeW/2)
                     ycopies(n=boardHeight-1, spacing=tileSize)
-                    cut_connector(spin=90, anchor=FRONT);
+                        cut_connector(spin=90, anchor=FRONT+TOP);
                 }
                 if (connectors[2]) { // bottom
+                    zmove(tileThickness/2 - connector_offset)
                     ymove(-boardSizeH/2)
                     xcopies(n=boardWidth-1, spacing=tileSize)
-                    cut_connector(spin=0, anchor=FRONT);
+                        cut_connector(spin=0, anchor=FRONT+TOP);
                 }
                 if (connectors[3]) { // left
+                    zmove(tileThickness/2 - connector_offset)
                     xmove(-boardSizeW/2)
                     xcopies(n=boardHeight-1, spacing=tileSize)
-                    cut_connector(spin=270, anchor=FRONT);
+                        cut_connector(spin=270, anchor=FRONT+TOP);
                 }
                 
                 // TODO: cut screw holes
@@ -82,7 +89,7 @@ module grid(
         children();
     }
 }
-//grid();
+grid();
 
 
 // Note: cut_tile Z anchor points are at tileThickness
