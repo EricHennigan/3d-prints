@@ -8,6 +8,7 @@ include <../opengrid/grid.scad>
 use <../opengrid/grid_vars.scad>
 
 _T = 0; _R = 1; _B = 2; _L = 3;
+_W = 0; _H = 1;
 
 module assembly() {
 /*
@@ -16,11 +17,7 @@ module assembly() {
     color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
     color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
 */
-    back() show_anchors();
-    // TODO: you have to make the back assembly a tiny bit larger
-    //       to account for the inner edges on the front doors
-    //       e.g. center tile not exactly square
-    //            top and bottom edges a bit longer
+    zmove(-28) back();
     // TODO: consider how to connect the pieces together
 }
 
@@ -28,11 +25,11 @@ function any(elems) = sum(elems) > 0 ? 1 : 0;
 
 // TODO: add a hinge to the piece!
 // TODO: add a magnet socket
-module piece(gridW, gridH, edges=[0,0,0,0], anchor, spin, orient) {
+module piece(gridW, gridH, edges=[0,0,0,0], pad=[0,0], anchor, spin, orient) {
     thick = 2.5; // keep same as /cabinet:back.thick
     depth = Tile_Thickness + 7.5 * any(edges); // taken from /shelf:shelf.height, keep same as /cabinet:back.depth
-    sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]);
-    sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]);
+    sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
+    sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]) + pad[_H];
     
     attachable(anchor, spin, orient, size=[sizeW, sizeH, thick+depth]) {
         zmove(-(thick+depth)/2)
@@ -63,36 +60,35 @@ function grid_off(n) = (n * Tile_Size) / 2;
 
 module back(anchor, spin, orient) {
     // TODO: how to access the size of inner pieces?
+    
     thick = 2.5; // keep same as /cabinet:piece.thick
     depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
+    pad = [2 * thick + .25, 0]; // padding for the front doors
     
-    sizeW = 12 * Tile_Size + 2 * thick;
-    sizeH = 12 * Tile_Size + 2 * thick;
+    sizeW = 12 * Tile_Size + 2 * thick + pad[_W];
+    sizeH = 12 * Tile_Size + 2 * thick + pad[_H];
     sizeZ = thick + depth;
+    
+    function offW(n) = grid_off(n) + sign(n) * pad[_W]/2;
+    function offH(n) = grid_off(n) + sign(n) * pad[_H]/2;
     
     attachable(anchor, spin, orient, size=[sizeW, sizeH, sizeZ]) {
         zmove(-sizeZ/2)
         union() {
             // center
-            piece(6, 6, edges=[0,0,0,0], anchor=BOTTOM);
+            piece(6, 6, edges=[0,0,0,0], pad=pad, anchor=BOTTOM);
+            
             // edges
-            xmove(grid_off(-6))
-                piece(3, 6, edges=[0,0,0,1], anchor=RIGHT+BOTTOM);
-            xmove(grid_off(6))
-                piece(3, 6, edges=[0,1,0,0], anchor=LEFT+BOTTOM);
-            ymove(grid_off(6))
-                piece(6, 3, edges=[1,0,0,0], anchor=FRONT+BOTTOM);
-            ymove(grid_off(-6))
-                piece(6, 3, edges=[0,0,1,0], anchor=BACK+BOTTOM);
+            xmove(offW(-6)) piece(3, 6, edges=[0,0,0,1], anchor=RIGHT+BOTTOM);
+            xmove(offW( 6)) piece(3, 6, edges=[0,1,0,0], anchor=LEFT+BOTTOM);
+            ymove(offH( 6)) piece(6, 3, edges=[1,0,0,0], pad=pad, anchor=FRONT+BOTTOM);
+            ymove(offH(-6)) piece(6, 3, edges=[0,0,1,0], pad=pad, anchor=BACK+BOTTOM);
+                
             // corners
-            move([grid_off(6), grid_off(6), 0])
-                piece(3, 3, edges=[1,1,0,0], anchor=FRONT+LEFT+BOTTOM);
-            move([grid_off(6), grid_off(-6), 0])
-                piece(3, 3, edges=[0,1,1,0], anchor=BACK+LEFT+BOTTOM);
-            move([grid_off(-6), grid_off(-6), 0])
-                piece(3, 3, edges=[0,0,1,1], anchor=BACK+RIGHT+BOTTOM);
-            move([grid_off(-6), grid_off(6), 0])
-                piece(3, 3, edges=[1,0,0,1], anchor=FRONT+RIGHT+BOTTOM);
+            move([offW( 6), offH( 6), 0]) piece(3, 3, edges=[1,1,0,0], anchor=FRONT+LEFT+BOTTOM);
+            move([offW( 6), offH(-6), 0]) piece(3, 3, edges=[0,1,1,0], anchor=BACK+LEFT+BOTTOM);
+            move([offW(-6), offH(-6), 0]) piece(3, 3, edges=[0,0,1,1], anchor=BACK+RIGHT+BOTTOM);
+            move([offW(-6), offH( 6), 0]) piece(3, 3, edges=[1,0,0,1], anchor=FRONT+RIGHT+BOTTOM);
         }
         children();
     }
