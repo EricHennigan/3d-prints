@@ -1,6 +1,6 @@
 
 include <BOSL2/std.scad>
-include <snap.scad>
+include <../opengrid/snap.scad>
 
 /* [Diamine Ink Bottle] */
 

@@ -1,31 +1,6 @@
 
 include <BOSL2/std.scad>
-
-// TODO: add support for BOM
-trim = 0.001;
-
-/* [Board Size] */
-Board_Style = "Lite"; //[Full, Lite]
-Board_Width = 2;
-Board_Height = 2;
-
-/* [Advanced: Tile Parameters] */
-Full_Thickness = 6.8;
-Lite_Thickness = 4.0;
-Tile_Thickness = Board_Style == "Full" ? Full_Thickness : Lite_Thickness;
-Tile_Size = 28;
-
-/* [Chamfer Options] */
-Chamfer_TL = true;
-Chamfer_TR = true;
-Chamfer_BL = true;
-Chamfer_BR = true;
-
-/* [Connector Options] */
-Connectors_T = true;
-Connectors_R = true;
-Connectors_B = true;
-Connectors_L = true;
+include <grid_vars.scad>
 
 module grid(
     boardWidth = Board_Width,
@@ -89,7 +64,7 @@ module grid(
         children();
     }
 }
-grid();
+//grid();
 
 
 // Note: cut_tile Z anchor points are at tileThickness
@@ -139,6 +114,7 @@ module cut_tile(
 
 
 // LITE and FULL have the same connector socket
+// WARN: size here must correspond to /connectors.lite_connector
 module cut_connector(
     anchor = CENTER,
     spin = 0,
@@ -147,7 +123,7 @@ module cut_connector(
     height = 2.4;
     width = 5.2;
     depth = 5.10;
-    
+
     // numbers measured in FreeCAD
     module quarter() {
         path = turtle([
@@ -177,26 +153,3 @@ module cut_connector(
 //cut_connector(anchor=FRONT) show_anchors(s=1);
 
 
-module lite_connector() {
-    // TODO: add attachments
-    // TODO: could not get the outside fillet on that dimple!
-    module quarter() {
-        round2d(ir=0.5) {
-            xmove(2.5) ring(r1=2.5, r2=1.7, angle=[0,90]);
-            ymove(2.5) xmove(2.5) rect([1.15, 0.8], anchor=RIGHT+BACK);
-            ymove(3.25+2.5-.25) ring(r1=4.05, r2=3.25, angle=[270,291]);
-            rect([0.6, 1.7], anchor=LEFT+FRONT);
-        }
-    }
-    render($fn=60) {
-        linear_extrude(height=2.2)
-        yflip_copy() {
-            union() {
-                xflip_copy() {
-                    quarter();
-                }
-            }
-        }
-    }
-}
-//lite_connector() show_anchors();
