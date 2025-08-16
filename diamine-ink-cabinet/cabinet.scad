@@ -10,23 +10,57 @@ use <../opengrid/grid_vars.scad>
 _T = 0; _R = 1; _B = 2; _L = 3;
 _W = 0; _H = 1;
 
+/* [Cabinet Tile Size] */
+Center = [8, 8]; // keep this even numbers
+Corner = [2, 2];
+
+// Make the cabinet
+assembly();
+
+
 module assembly() {
-/*
-    color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
-    color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
-    color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
-    color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
-*/
-    zmove(-28) back();
+    thick = 2.4; // thickness of the walls
+    // TODO: might want some clearance for the grid inside doors and back?
+    
+    //module grid() {}
+    
+    module asm_back() {
+        back(thick=thick);
+        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
+        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
+        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
+    }
+    module asm_door() {
+        // Right door
+        door(thick=thick, anchor=RIGHT, orient=BOT);
+        xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
+        xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+    }
+    
+    zmove(-100)
+      asm_back();
+    zmove(100)
+    xflip_copy()
+        asm_door();
+    
+    // Left door
+    //zmove(28) door(anchor=LEFT);
     // TODO: consider how to connect the pieces together
 }
 
-function any(elems) = sum(elems) > 0 ? 1 : 0;
+function grid_off(n) = (n * Tile_Size) / 2;
 
 // TODO: add a hinge to the piece!
 // TODO: add a magnet socket
-module piece(gridW, gridH, edges=[0,0,0,0], pad=[0,0], anchor, spin, orient) {
-    thick = 2.5; // keep same as /cabinet:back.thick
+module piece(gridW, gridH, 
+    thick=2.4,
+    edges=[0,0,0,0],
+    hinges=[0,0,0,0],
+    pad=[0,0],
+    anchor, spin, orient)
+{
+    function any(elems) = sum(elems) > 0 ? 1 : 0;
     depth = Tile_Thickness + 7.5 * any(edges); // taken from /shelf:shelf.height, keep same as /cabinet:back.depth
     sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
     sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]) + pad[_H];
@@ -56,17 +90,14 @@ module piece(gridW, gridH, edges=[0,0,0,0], pad=[0,0], anchor, spin, orient) {
     }
 }
 
-function grid_off(n) = (n * Tile_Size) / 2;
-
-module back(anchor, spin, orient) {
-    // TODO: how to access the size of inner pieces?
     
-    thick = 2.5; // keep same as /cabinet:piece.thick
+// TODO: add clearance for the grid?
+module back(anchor, spin, orient, thick=2.4) {
     depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
     pad = [2 * thick + .25, 0]; // padding for the front doors
-    
-    sizeW = 12 * Tile_Size + 2 * thick + pad[_W];
-    sizeH = 12 * Tile_Size + 2 * thick + pad[_H];
+       
+    sizeW = (Center[_W] + 2*Corner[_W]) * Tile_Size + 2 * thick + pad[_W];
+    sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick + pad[_H];
     sizeZ = thick + depth;
     
     function offW(n) = grid_off(n) + sign(n) * pad[_W]/2;
@@ -76,22 +107,69 @@ module back(anchor, spin, orient) {
         zmove(-sizeZ/2)
         union() {
             // center
-            piece(6, 6, edges=[0,0,0,0], pad=pad, anchor=BOTTOM);
+            piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM);
             
             // edges
-            xmove(offW(-6)) piece(3, 6, edges=[0,0,0,1], anchor=RIGHT+BOTTOM);
-            xmove(offW( 6)) piece(3, 6, edges=[0,1,0,0], anchor=LEFT+BOTTOM);
-            ymove(offH( 6)) piece(6, 3, edges=[1,0,0,0], pad=pad, anchor=FRONT+BOTTOM);
-            ymove(offH(-6)) piece(6, 3, edges=[0,0,1,0], pad=pad, anchor=BACK+BOTTOM);
+            xmove(offW(-Center[_W]))
+            piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=RIGHT+BOTTOM);
+            
+            xmove(offW( Center[_W]))
+            piece(Corner[_W], Center[_H], edges=[0,1,0,0], thick=thick, anchor=LEFT+BOTTOM);
+            
+            ymove(offH( Center[_H]))
+            piece(Center[_W], Corner[_H], edges=[1,0,0,0], thick=thick, pad=pad, anchor=FRONT+BOTTOM);
+            
+            ymove(offH(-Center[_H]))
+            piece(Center[_W], Corner[_H], edges=[0,0,1,0], thick=thick, pad=pad, anchor=BACK+BOTTOM);
                 
             // corners
-            move([offW( 6), offH( 6), 0]) piece(3, 3, edges=[1,1,0,0], anchor=FRONT+LEFT+BOTTOM);
-            move([offW( 6), offH(-6), 0]) piece(3, 3, edges=[0,1,1,0], anchor=BACK+LEFT+BOTTOM);
-            move([offW(-6), offH(-6), 0]) piece(3, 3, edges=[0,0,1,1], anchor=BACK+RIGHT+BOTTOM);
-            move([offW(-6), offH( 6), 0]) piece(3, 3, edges=[1,0,0,1], anchor=FRONT+RIGHT+BOTTOM);
+            move([offW( Center[_W]), offH( Center[_H]), 0])
+            piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM);
+            
+            move([offW( Center[_W]), offH(-Center[_H]), 0])
+            piece(Corner[_W], Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BACK+LEFT+BOTTOM);
+            
+            move([offW(-Center[_W]), offH(-Center[_H]), 0])
+            piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BACK+RIGHT+BOTTOM);
+            
+            move([offW(-Center[_W]), offH( Center[_H]), 0])
+            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=FRONT+RIGHT+BOTTOM);
         }
         children();
     }
 }
 
-assembly();
+
+module door(anchor, spin, orient, thick=2.4) {
+    depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
+    
+    sizeW = (Center[_W]/2 + Corner[_W]) * Tile_Size + 2 * thick;
+    sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick;
+    sizeZ = thick + depth;
+
+    attachable(anchor, spin, orient, size=[sizeW, sizeH, sizeZ]) {
+        zmove(-sizeZ/2)
+        xmove((Corner[_W]-Center[_W]/2)/2 * Tile_Size)
+        //xmove(-sizeW/2)
+        union() {
+            // center-side
+            piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+            
+            ymove(grid_off( Center[_H]))
+            piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
+            
+            ymove(grid_off(-Center[_H]))
+            piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
+            
+            // edge-side
+            piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT);
+            
+            ymove(grid_off( Center[_H]))
+            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT);
+            
+            ymove(grid_off(-Center[_H]))
+            piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT);
+        }
+        children();
+    }
+}
