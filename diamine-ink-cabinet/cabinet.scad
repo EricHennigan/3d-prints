@@ -4,6 +4,8 @@
  */
 
 include <BOSL2/std.scad>
+include <BOSL2/hinges.scad>
+
 include <../opengrid/grid.scad>
 use <../opengrid/grid_vars.scad>
 
@@ -26,7 +28,7 @@ module assembly() {
     //module grid() {}
     
     module asm_back() {
-        back(thick=thick);
+        cab_back(thick=thick);
         /*
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
@@ -36,16 +38,16 @@ module assembly() {
     }
     module asm_door() {
         // Right door
-        door(thick=thick, anchor=RIGHT, orient=BOT);
+        cab_door(thick=thick, anchor=RIGHT, orient=BOT);
         /*
         xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
         xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
         */
     }
     
-    zmove(-100)
+    zmove(-8)
       asm_back();
-    zmove(100)
+    zmove(8)
     xflip_copy()
         asm_door();
     
@@ -63,6 +65,7 @@ module piece(gridW, gridH,
     edges=[0,0,0,0],
     hinges=[0,0,0,0],
     pad=[0,0],
+    hinge_inner=false,
     anchor, spin, orient)
 {
     function any(elems) = sum(elems) > 0 ? 1 : 0;
@@ -70,6 +73,7 @@ module piece(gridW, gridH,
     sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
     sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]) + pad[_H];
     
+    $fn=60;
     attachable(anchor, spin, orient, size=[sizeW, sizeH, thick+depth]) {
         zmove(-(thick+depth)/2)
         union() {
@@ -80,7 +84,16 @@ module piece(gridW, gridH,
             }
             if (edges[_R]) {
                 move([sizeW/2, 0, thick])
-                cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
+                if (hinges[_R] > 0) {
+                    diff()
+                    cuboid([thick, sizeH, depth], anchor=BOT+RIGHT)
+                        position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)                        
+                        knuckle_hinge(length=sizeH, segs=hinges[_R], inner=hinge_inner,
+                                      offset=1.6, arm_height=1, teardrop=true,
+                                      knuckle_diam=3, knuckle_clearance=0.2);
+                } else {
+                    cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
+                }
             }
             if (edges[_B]) {
                 move([0, -sizeH/2, thick])
@@ -88,16 +101,26 @@ module piece(gridW, gridH,
             }
             if (edges[_L]) {
                 move([-sizeW/2, 0, thick])
-                cuboid([thick, sizeH, depth], anchor=BOT+LEFT);
+                if (hinges[_L] > 0) {
+                    diff()
+                    cuboid([thick, sizeH, depth], anchor=BOT+LEFT)
+                        position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)                        
+                        knuckle_hinge(length=sizeH, segs=hinges[_L], inner=hinge_inner,
+                                      offset=1.6, arm_height=1, teardrop=true,
+                                      knuckle_diam=3, knuckle_clearance=0.2);
+                } else {
+                    cuboid([thick, sizeH, depth], anchor=BOT+LEFT);
+                }
             }
         }
         children();
     }
 }
+//piece(2, 3, edges=[0,1,0,1], hinges=[0,3,0,3]);
 
     
 // TODO: add clearance for the grid?
-module back(
+module cab_back(
     thick=2.4,
     anchor, spin, orient
 ) {
@@ -118,11 +141,10 @@ module back(
             piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM);
             
             // edges
-            xmove(offW(-Center[_W]) - explode)
-            piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=RIGHT+BOTTOM);
-            
-            xmove(offW( Center[_W]) + explode)
-            piece(Corner[_W], Center[_H], edges=[0,1,0,0], thick=thick, anchor=LEFT+BOTTOM);
+            xflip_copy()
+                xmove(offW( Center[_W]) + explode)
+                piece(Corner[_W], Center[_H], edges=[0,1,0,0], thick=thick, anchor=LEFT+BOTTOM,
+                    hinges=[0,11,0,0], hinge_inner=true);
             
             ymove(offH( Center[_H]) + explode)
             piece(Center[_W], Corner[_H], edges=[1,0,0,0], thick=thick, pad=pad, anchor=FRONT+BOTTOM);
@@ -131,24 +153,22 @@ module back(
             piece(Center[_W], Corner[_H], edges=[0,0,1,0], thick=thick, pad=pad, anchor=BACK+BOTTOM);
                 
             // corners
-            move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
-            piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM);
+            xflip_copy()
+                move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
+                piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM,
+                    hinges=[0,3,0,0]);
             
-            move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
-            piece(Corner[_W], Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BACK+LEFT+BOTTOM);
-            
-            move([offW(-Center[_W]) - explode, offH(-Center[_H]) - explode, 0])
-            piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BACK+RIGHT+BOTTOM);
-            
-            move([offW(-Center[_W]) - explode, offH( Center[_H]) + explode, 0])
-            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=FRONT+RIGHT+BOTTOM);
+            xflip_copy()
+                move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
+                piece(Corner[_W], Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BACK+LEFT+BOTTOM,
+                    hinges=[0,3,0,0]);
         }
         children();
     }
 }
 
 
-module door(
+module cab_door(
     thick=2.4,
     hinges=[0,0,0,0],
     anchor, spin, orient
@@ -180,13 +200,16 @@ module door(
                     piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
                     
                     // edge-side
-                    piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT);
+                    piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
+                        hinges=[0,0,0,11]);
                     
                     ymove(grid_off( Center[_H]) + explode)
-                    piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT);
+                    piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
+                        hinges=[0,0,0,3], hinge_inner=true);
                     
                     ymove(grid_off(-Center[_H]) - explode)
-                    piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT);
+                    piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT,
+                        hinges=[0,0,0,3], hinge_inner=true);
                     }
                 }
         }
