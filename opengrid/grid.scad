@@ -13,6 +13,15 @@ module grid(
     spin = 0,
     orient = UP,
 ) {
+    echo(str("BOM grid(",
+         "boardWidth=", boardWidth, 
+         ", boardHeight=", boardHeight,
+         ", tileSize=", tileSize,
+         ", tileThickness=", tileThickness,
+         ", chamfers=", chamfers,
+         ", connectors=", connectors,
+         ");"));
+         
     boardSizeW = tileSize * boardWidth;
     boardSizeH = tileSize * boardHeight;
     

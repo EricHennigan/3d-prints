@@ -17,7 +17,7 @@ Center = [8, 8]; // keep this even numbers
 Corner = [2, 2];
 
 // Make the cabinet
-explode = 0; // set =5 for printing
+explode = 5; // set =5 for printing
 assembly();
 
 
@@ -30,25 +30,38 @@ module assembly() {
     module asm_back() {
         cab_back(thick=thick);
         /*
-        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
-        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
-        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
-        color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
+        color("black", 0.3)
+        zmove(explode*thick) {
+            move([ explode,  explode, 0])
+                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
+            move([-explode,  explode, 0])
+                grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
+            move([ explode, -explode, 0])
+                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+            move([-explode, -explode, 0])
+                grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
+        }
         */
     }
     module asm_door() {
         // Right door
         cab_door(thick=thick, anchor=RIGHT, orient=BOT);
         /*
-        xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
-        xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+        zmove(-explode*thick)
+        color("black", 0.3) {
+            ymove( explode)
+                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
+            ymove(-explode)
+                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+        }
         */
     }
     
-    zmove(-8)
+    zmove(-80)
       asm_back();
-    zmove(8)
+    zmove(80)
     xflip_copy()
+        xmove(10)
         asm_door();
     
     // Left door
@@ -68,6 +81,14 @@ module piece(gridW, gridH,
     hinge_inner=false,
     anchor, spin, orient)
 {
+    echo(str("BOM piece(",
+        "thick=", thick,
+        ", edges=", edges,
+        ", hinges=", hinges,
+        ", pad=", pad,
+        ", hinge_inner=", hinge_inner,
+        ");"));
+    
     function any(elems) = sum(elems) > 0 ? 1 : 0;
     depth = Tile_Thickness + 7.5 * any(edges); // taken from /shelf:shelf.height, keep same as /cabinet:back.depth
     sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
