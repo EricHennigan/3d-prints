@@ -15,6 +15,7 @@ Center = [8, 8]; // keep this even numbers
 Corner = [2, 2];
 
 // Make the cabinet
+explode = 0; // set =5 for printing
 assembly();
 
 
@@ -26,16 +27,20 @@ module assembly() {
     
     module asm_back() {
         back(thick=thick);
+        /*
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
         color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
+        */
     }
     module asm_door() {
         // Right door
         door(thick=thick, anchor=RIGHT, orient=BOT);
+        /*
         xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
         xmove(thick) color("black", 0.3) grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+        */
     }
     
     zmove(-100)
@@ -92,7 +97,10 @@ module piece(gridW, gridH,
 
     
 // TODO: add clearance for the grid?
-module back(anchor, spin, orient, thick=2.4) {
+module back(
+    thick=2.4,
+    anchor, spin, orient
+) {
     depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
     pad = [2 * thick + .25, 0]; // padding for the front doors
        
@@ -110,29 +118,29 @@ module back(anchor, spin, orient, thick=2.4) {
             piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM);
             
             // edges
-            xmove(offW(-Center[_W]))
+            xmove(offW(-Center[_W]) - explode)
             piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=RIGHT+BOTTOM);
             
-            xmove(offW( Center[_W]))
+            xmove(offW( Center[_W]) + explode)
             piece(Corner[_W], Center[_H], edges=[0,1,0,0], thick=thick, anchor=LEFT+BOTTOM);
             
-            ymove(offH( Center[_H]))
+            ymove(offH( Center[_H]) + explode)
             piece(Center[_W], Corner[_H], edges=[1,0,0,0], thick=thick, pad=pad, anchor=FRONT+BOTTOM);
             
-            ymove(offH(-Center[_H]))
+            ymove(offH(-Center[_H]) - explode)
             piece(Center[_W], Corner[_H], edges=[0,0,1,0], thick=thick, pad=pad, anchor=BACK+BOTTOM);
                 
             // corners
-            move([offW( Center[_W]), offH( Center[_H]), 0])
+            move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
             piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM);
             
-            move([offW( Center[_W]), offH(-Center[_H]), 0])
+            move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
             piece(Corner[_W], Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BACK+LEFT+BOTTOM);
             
-            move([offW(-Center[_W]), offH(-Center[_H]), 0])
+            move([offW(-Center[_W]) - explode, offH(-Center[_H]) - explode, 0])
             piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BACK+RIGHT+BOTTOM);
             
-            move([offW(-Center[_W]), offH( Center[_H]), 0])
+            move([offW(-Center[_W]) - explode, offH( Center[_H]) + explode, 0])
             piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=FRONT+RIGHT+BOTTOM);
         }
         children();
@@ -140,36 +148,52 @@ module back(anchor, spin, orient, thick=2.4) {
 }
 
 
-module door(anchor, spin, orient, thick=2.4) {
+module door(
+    thick=2.4,
+    hinges=[0,0,0,0],
+    anchor, spin, orient
+) {
     depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
     
     sizeW = (Center[_W]/2 + Corner[_W]) * Tile_Size + 2 * thick;
     sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick;
     sizeZ = thick + depth;
+    
+    sideR = Center[_W]/2 * Tile_Size + thick;
 
     attachable(anchor, spin, orient, size=[sizeW, sizeH, sizeZ]) {
         zmove(-sizeZ/2)
         xmove((Corner[_W]-Center[_W]/2)/2 * Tile_Size)
-        //xmove(-sizeW/2)
         union() {
-            // center-side
-            piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
-            
-            ymove(grid_off( Center[_H]))
-            piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
-            
-            ymove(grid_off(-Center[_H]))
-            piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
-            
-            // edge-side
-            piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT);
-            
-            ymove(grid_off( Center[_H]))
-            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT);
-            
-            ymove(grid_off(-Center[_H]))
-            piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT);
+            difference() {
+                union() {
+                    // center-side
+                    xmove(explode)
+                    piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+                    
+                    xmove(explode)
+                    ymove(grid_off( Center[_H]) + explode)
+                    piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
+                    
+                    xmove(explode)
+                    ymove(grid_off(-Center[_H]) - explode)
+                    piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
+                    
+                    // edge-side
+                    piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT);
+                    
+                    ymove(grid_off( Center[_H]) + explode)
+                    piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT);
+                    
+                    ymove(grid_off(-Center[_H]) - explode)
+                    piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT);
+                    }
+                }
         }
+        
         children();
     }
 }
+
+//thick=2.4;
+//door(thick=thick, hinges=[0,1,0,0]);
