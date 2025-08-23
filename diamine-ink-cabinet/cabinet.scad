@@ -234,7 +234,7 @@ module cab_door(
             yflip_copy()
             ymove(grid_off( Center[_H]) + explode)
             piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
-                hinges=[0,0,0,3], hinge_inner=true, onlay=[55, 55, .2])
+                hinges=[0,0,0,3], hinge_inner=true, onlay=[55, 55, .4])
                 position(CENTER+BOTTOM) orient(DOWN) zrot(-90)
                     corner_onlay(size=[55, 55, 1]);
         }        
