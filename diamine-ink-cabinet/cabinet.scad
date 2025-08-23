@@ -117,7 +117,7 @@ module piece(gridW, gridH,
                             position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)                        
                             knuckle_hinge(length=sizeH, segs=hinges[_R], inner=hinge_inner,
                                           offset=1.6, arm_height=1, teardrop=true,
-                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.8);
+                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.85);
                     } else {
                         cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
                     }
@@ -134,7 +134,7 @@ module piece(gridW, gridH,
                             position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)                        
                             knuckle_hinge(length=sizeH, segs=hinges[_L], inner=hinge_inner,
                                           offset=1.6, arm_height=1, teardrop=true,
-                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.8);
+                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.85);
                     } else {
                         cuboid([thick, sizeH, depth], anchor=BOT+LEFT);
                     }
