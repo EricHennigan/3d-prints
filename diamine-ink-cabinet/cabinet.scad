@@ -74,8 +74,6 @@ module assembly() {
 
 function grid_off(n) = (n * Tile_Size) / 2;
 
-// TODO: add a hinge to the piece!
-// TODO: add a magnet socket
 module piece(gridW, gridH, 
     thick=2.4,
     edges=[0,0,0,0],
@@ -83,15 +81,19 @@ module piece(gridW, gridH,
     pad=[0,0],
     hinge_inner=false,
     onlay=[0,0,0],
+    magnets=[0,0,0,0],
     anchor, spin, orient)
 {
     echo(str("BOM piece(",
+        gridW, ", ",
+        gridH, ", ",
         "thick=", thick,
         ", edges=", edges,
         ", hinges=", hinges,
         ", pad=", pad,
         ", hinge_inner=", hinge_inner,
         ", onlay=", onlay,
+        ", magnets=", magnets,
         ");"));
     
     function any(elems) = sum(elems) > 0 ? 1 : 0;
@@ -140,13 +142,44 @@ module piece(gridW, gridH,
                     }
                 }
             }
+            // remove the onlay
             zmove(-clear/2)
             cuboid(onlay + [clear, clear, clear], anchor=BOT);
+            
+            
+            if (magnets[_T] > 0) {
+                ymove(sizeH/2 + trim)
+                zmove(thick)
+                xcopies(spacing=sizeW/magnets[_T], n=magnets[_T])
+                    teardrop(h=1.2, d=8+clear/2, anchor=BOT+BACK, ang=60);
+            }
+            if (magnets[_R] > 0) {
+                zrot(-90)
+                ymove(sizeW/2 + trim)
+                zmove(thick)
+                xcopies(spacing=sizeH/magnets[_R], n=magnets[_R])
+                    teardrop(h=1.2, d=8+clear/2, anchor=BOT+BACK, ang=60);
+            }
+            if (magnets[_B] > 0) {
+                ymove(-sizeH/2 - trim)
+                zmove(thick)
+                xcopies(spacing=sizeW/magnets[_B], n=magnets[_B])
+                    teardrop(h=1.2, d=8+clear/2, anchor=BOT+FRONT, ang=60);
+
+            }
+            if (magnets[_L] > 0) {
+                zrot(90)
+                ymove(sizeW/2 + trim)
+                zmove(thick)
+                xcopies(spacing=sizeH/magnets[_L], n=magnets[_L])
+                    teardrop(h=1.2, d=8+clear/2, anchor=BOT+BACK, ang=60);
+            }
         }
         children();
     }
 }
-//piece(2, 2, edges=[1,1,0,1], hinges=[0,3,0,3], onlay=[50, 50, .1]);
+//piece(2, 3, thick=2.4, edges=[0, 1, 1, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, onlay=[55, 55, 0.2], magnets=[0,2,3,4]);
+
 
     
 // TODO: add clearance for the grid?
