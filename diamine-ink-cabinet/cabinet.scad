@@ -12,6 +12,8 @@ use <../opengrid/grid_vars.scad>
 _T = 0; _R = 1; _B = 2; _L = 3;
 _W = 0; _H = 1;
 
+clear = 0.1;
+
 /* [Cabinet Tile Size] */
 Center = [8, 8]; // keep this even numbers
 Corner = [2, 2];
@@ -21,6 +23,7 @@ explode = 5; // set =5 for printing
 assembly();
 
 
+
 module assembly() {
     thick = 2.4; // thickness of the walls
     // TODO: might want some clearance for the grid inside doors and back?
@@ -28,7 +31,7 @@ module assembly() {
     //module grid() {}
     
     module asm_back() {
-        cab_back(thick=thick);
+        //cab_back(thick=thick);
         /*
         color("black", 0.3)
         zmove(explode*thick) {
@@ -79,6 +82,7 @@ module piece(gridW, gridH,
     hinges=[0,0,0,0],
     pad=[0,0],
     hinge_inner=false,
+    onlay=[0,0,0],
     anchor, spin, orient)
 {
     echo(str("BOM piece(",
@@ -87,6 +91,7 @@ module piece(gridW, gridH,
         ", hinges=", hinges,
         ", pad=", pad,
         ", hinge_inner=", hinge_inner,
+        ", onlay=", onlay,
         ");"));
     
     function any(elems) = sum(elems) > 0 ? 1 : 0;
@@ -97,47 +102,51 @@ module piece(gridW, gridH,
     $fn=60;
     attachable(anchor, spin, orient, size=[sizeW, sizeH, thick+depth]) {
         zmove(-(thick+depth)/2)
-        union() {
-            cuboid([sizeW, sizeH, thick], anchor=BOT);
-            if (edges[_T]) {
-                move([0, sizeH/2, thick])
-                cuboid([sizeW, thick, depth], anchor=BOT+BACK);
-            }
-            if (edges[_R]) {
-                move([sizeW/2, 0, thick])
-                if (hinges[_R] > 0) {
-                    diff()
-                    cuboid([thick, sizeH, depth], anchor=BOT+RIGHT)
-                        position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)                        
-                        knuckle_hinge(length=sizeH, segs=hinges[_R], inner=hinge_inner,
-                                      offset=1.6, arm_height=1, teardrop=true,
-                                      knuckle_diam=3, knuckle_clearance=0.2);
-                } else {
-                    cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
+        difference() {
+            union() {
+                cuboid([sizeW, sizeH, thick], anchor=BOT);
+                if (edges[_T]) {
+                    move([0, sizeH/2, thick])
+                    cuboid([sizeW, thick, depth], anchor=BOT+BACK);
+                }
+                if (edges[_R]) {
+                    move([sizeW/2, 0, thick])
+                    if (hinges[_R] > 0) {
+                        diff()
+                        cuboid([thick, sizeH, depth], anchor=BOT+RIGHT)
+                            position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)                        
+                            knuckle_hinge(length=sizeH, segs=hinges[_R], inner=hinge_inner,
+                                          offset=1.6, arm_height=1, teardrop=true,
+                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.8);
+                    } else {
+                        cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
+                    }
+                }
+                if (edges[_B]) {
+                    move([0, -sizeH/2, thick])
+                    cuboid([sizeW, thick, depth], anchor=BOT+FRONT);
+                }
+                if (edges[_L]) {
+                    move([-sizeW/2, 0, thick])
+                    if (hinges[_L] > 0) {
+                        diff()
+                        cuboid([thick, sizeH, depth], anchor=BOT+LEFT)
+                            position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)                        
+                            knuckle_hinge(length=sizeH, segs=hinges[_L], inner=hinge_inner,
+                                          offset=1.6, arm_height=1, teardrop=true,
+                                          knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.8);
+                    } else {
+                        cuboid([thick, sizeH, depth], anchor=BOT+LEFT);
+                    }
                 }
             }
-            if (edges[_B]) {
-                move([0, -sizeH/2, thick])
-                cuboid([sizeW, thick, depth], anchor=BOT+FRONT);
-            }
-            if (edges[_L]) {
-                move([-sizeW/2, 0, thick])
-                if (hinges[_L] > 0) {
-                    diff()
-                    cuboid([thick, sizeH, depth], anchor=BOT+LEFT)
-                        position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)                        
-                        knuckle_hinge(length=sizeH, segs=hinges[_L], inner=hinge_inner,
-                                      offset=1.6, arm_height=1, teardrop=true,
-                                      knuckle_diam=3, knuckle_clearance=0.2);
-                } else {
-                    cuboid([thick, sizeH, depth], anchor=BOT+LEFT);
-                }
-            }
+            zmove(-clear/2)
+            cuboid(onlay + [clear, clear, clear], anchor=BOT);
         }
         children();
     }
 }
-//piece(2, 3, edges=[0,1,0,1], hinges=[0,3,0,3]);
+//piece(2, 2, edges=[1,1,0,1], hinges=[0,3,0,3], onlay=[50, 50, .1]);
 
     
 // TODO: add clearance for the grid?
@@ -177,7 +186,7 @@ module cab_back(
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
                 piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM,
-                    hinges=[0,3,0,0]);
+                    hinges=[0,3,0,0])
             
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
@@ -206,38 +215,64 @@ module cab_door(
         zmove(-sizeZ/2)
         xmove((Corner[_W]-Center[_W]/2)/2 * Tile_Size)
         union() {
-            difference() {
-                union() {
-                    // center-side
-                    xmove(explode)
-                    piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
-                    
-                    xmove(explode)
-                    ymove(grid_off( Center[_H]) + explode)
-                    piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
-                    
-                    xmove(explode)
-                    ymove(grid_off(-Center[_H]) - explode)
-                    piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
-                    
-                    // edge-side
-                    piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
-                        hinges=[0,0,0,11]);
-                    
-                    ymove(grid_off( Center[_H]) + explode)
-                    piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
-                        hinges=[0,0,0,3], hinge_inner=true);
-                    
-                    ymove(grid_off(-Center[_H]) - explode)
-                    piece(Corner[_W], Corner[_H], edges=[0,0,1,1], thick=thick, anchor=BOTTOM+BACK+RIGHT,
-                        hinges=[0,0,0,3], hinge_inner=true);
-                    }
-                }
-        }
-        
+            // center-side
+            xmove(explode)
+            piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+            
+            xmove(explode)
+            ymove(grid_off( Center[_H]) + explode)
+            piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
+            
+            xmove(explode)
+            ymove(grid_off(-Center[_H]) - explode)
+            piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
+            
+            // edge-side
+            piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
+                hinges=[0,0,0,11]);
+
+            yflip_copy()
+            ymove(grid_off( Center[_H]) + explode)
+            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
+                hinges=[0,0,0,3], hinge_inner=true, onlay=[55, 55, .2])
+                position(CENTER+BOTTOM) orient(DOWN) zrot(-90)
+                    corner_onlay(size=[55, 55, 1]);
+        }        
         children();
     }
 }
+
+module corner_onlay(
+    size = [70, 70, 5],
+    anchor, spin, orient
+) {
+    echo(str("BOM corner_onlay(",
+        "size=", size,
+        ");"));
+    
+    attachable(anchor, spin, orient, size=size) {
+        scale([size[0]/70, size[1]/70, size[2]/5])
+        move([-34, -34, -1.5])
+        union() {
+            linear_extrude(height = 1)
+            import(file="corner-onlay.svg", layer="gray0");
+            
+            linear_extrude(height = 2)
+            import(file="corner-onlay.svg", layer="gray1");
+            
+            linear_extrude(height = 3)
+            import(file="corner-onlay.svg", layer="gray2");
+            
+            linear_extrude(height = 4)
+            import(file="corner-onlay.svg", layer="gray3");
+            
+            move([-1, -1, 0])
+            cuboid([70, 70, 1], anchor=TOP+LEFT+FRONT);
+        }
+        children();
+    }
+}
+//corner_onlay(size=[10, 10, 1]) show_anchors(s=1);
 
 //thick=2.4;
 //door(thick=thick, hinges=[0,1,0,0]);
