@@ -23,7 +23,6 @@ explode = 5; // set =5 for printing
 assembly();
 
 
-
 module assembly() {
     thick = 2.4; // thickness of the walls
     // TODO: might want some clearance for the grid inside doors and back?
@@ -49,7 +48,7 @@ module assembly() {
     module asm_door() {
         // Right door
         cab_door(thick=thick, anchor=RIGHT, orient=BOT);
-        /*
+        
         zmove(-explode*thick)
         color("black", 0.3) {
             ymove( explode)
@@ -57,7 +56,7 @@ module assembly() {
             ymove(-explode)
                 grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
         }
-        */
+        
     }
     
     zmove(-80)
@@ -66,10 +65,6 @@ module assembly() {
     xflip_copy()
         xmove(10)
         asm_door();
-    
-    // Left door
-    //zmove(28) door(anchor=LEFT);
-    // TODO: consider how to connect the pieces together
 }
 
 function grid_off(n) = (n * Tile_Size) / 2;
@@ -100,6 +95,7 @@ module piece(gridW, gridH,
     depth = Tile_Thickness + 7.5 * any(edges); // taken from /shelf:shelf.height, keep same as /cabinet:back.depth
     sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
     sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]) + pad[_H];
+    echo("piece size: ", sizeW, sizeH);
     
     $fn=60;
     attachable(anchor, spin, orient, size=[sizeW, sizeH, thick+depth]) {
@@ -202,7 +198,7 @@ module cab_back(
         union() {
             // center
             piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM);
-            
+
             // edges
             xflip_copy()
                 xmove(offW( Center[_W]) + explode)
@@ -219,7 +215,7 @@ module cab_back(
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
                 piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM,
-                    hinges=[0,3,0,0])
+                    hinges=[0,3,0,0]);
             
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
@@ -249,8 +245,24 @@ module cab_door(
         xmove((Corner[_W]-Center[_W]/2)/2 * Tile_Size)
         union() {
             // center-side
-            xmove(explode)
-            piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+            xmove(explode) {
+                difference() {
+                    piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+                    
+                    ymove(-6.65)
+                    xmove(Center[_W]/2*Tile_Size + thick+trim)
+                    zmove(0.5-trim)
+                    {
+                        nib_relief(size=[100, 200, 0.5+2*trim], anchor=RIGHT);
+                        ymove(20.5)
+                        sphere(d=20.4);
+                    }
+                }
+                ymove(-6.65)
+                xmove(Center[_W]/2*Tile_Size + thick)
+                zmove(0.5-trim)
+                    nib_onlay(size=[100, 200, 0.5], anchor=RIGHT);
+            }
             
             xmove(explode)
             ymove(grid_off( Center[_H]) + explode)
@@ -307,5 +319,53 @@ module corner_onlay(
 }
 //corner_onlay(size=[10, 10, 1]) show_anchors(s=1);
 
-//thick=2.4;
-//door(thick=thick, hinges=[0,1,0,0]);
+
+module nib_relief(
+    size = [100, 200, 1],
+    anchor, spin, orient
+) {
+    attachable(anchor, spin, orient, size=size) {
+        move([50, -100, -0.5])
+        scale([size[0]/100, size[1]/200, size[2]/1])
+        xmove(-99.7)
+        linear_extrude(height=1)
+            import(file="nib-onlay.svg", layer="Outline", convexity=10);
+        
+        children();
+    }
+}
+//zmove(-2) nib_relief(anchor=TOP);
+
+
+module nib_onlay(
+    size = [100, 200, 1],
+    anchor, spin, orient
+) {
+    //echo()
+    layers = [
+        "Nib-gold",
+        "Nib-silver",
+        "Fleur",
+        "Ribs",
+        "Barrel",
+        "Neck",
+    ];
+    
+    attachable(anchor, spin, orient, size=size) {
+        move([50, -100, -0.5])
+        difference() {
+            scale([size[0]/100, size[1]/200, size[2]/1])
+            xmove(-99.7)
+            for(layer = layers) {
+                linear_extrude(height=1)
+                import(file="nib-onlay.svg", layer=layer, convexity=10);
+            }
+
+            ymove(-5)
+                cuboid([30, 210, 10], anchor=FRONT+LEFT);
+            cuboid([50, 20, 10], anchor=BACK);
+        }
+        children();
+    }
+}
+//nib_onlay(); //show_anchors(s=3);
