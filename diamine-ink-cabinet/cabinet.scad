@@ -20,7 +20,7 @@ Corner = [2, 2];
 
 // Make the cabinet
 explode = 5; // set =5 for printing
-assembly();
+//assembly();
 
 
 module assembly() {
@@ -51,10 +51,7 @@ module assembly() {
         
         zmove(-explode*thick)
         color("black", 0.3) {
-            ymove( explode)
-                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
-            ymove(-explode)
-                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+
         }
         
     }
@@ -282,10 +279,32 @@ module cab_door(
                 hinges=[0,0,0,3], hinge_inner=true, onlay=[55, 55, .4])
                 position(CENTER+BOTTOM) orient(DOWN) zrot(-90)
                     corner_onlay(size=[55, 55, 1]);
+        
+            // grids
+            ymove(explode/2)
+            zmove(explode)
+            difference() {
+                xmove(Corner[_W]/2*Tile_Size)
+                zmove(thick)
+                    grid(6, 6, chamfers=[0,0,0,0], anchor=BOTTOM+FRONT);
+
+                // see sphere cutout above
+                ymove(-6.65 + 20.5)
+                xmove(Center[_W]/2*Tile_Size + thick)
+                zmove(0.5-trim)
+                    sphere(d=20.4);
+            }
+            
+            ymove(-explode/2)
+            zmove(thick + explode)
+            xmove(Corner[_W]/2*Tile_Size)
+                grid(6, 6, chamfers=[0,0,0,0], anchor=BOTTOM+BACK);
+                
         }        
         children();
     }
 }
+cab_door();
 
 module corner_onlay(
     size = [70, 70, 5],
