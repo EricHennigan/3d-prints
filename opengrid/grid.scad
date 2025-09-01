@@ -2,6 +2,8 @@
 include <BOSL2/std.scad>
 include <grid_vars.scad>
 
+_T = 0; _R = 1; _B = 2; _L = 3;
+
 module grid(
     boardWidth = Board_Width,
     boardHeight = Board_Height,
@@ -9,6 +11,7 @@ module grid(
     tileThickness = Tile_Thickness,
     chamfers = [Chamfer_TR, Chamfer_BR, Chamfer_BL, Chamfer_TL],
     connectors = [Connectors_T, Connectors_R, Connectors_B, Connectors_L],
+    pad = [0,0,0,0],
     anchor = CENTER,
     spin = 0,
     orient = UP,
@@ -22,8 +25,10 @@ module grid(
          ", connectors=", connectors,
          ");"));
          
-    boardSizeW = tileSize * boardWidth;
-    boardSizeH = tileSize * boardHeight;
+    boardSizeW = tileSize * boardWidth + pad[_L] + pad[_R];
+    boardSizeH = tileSize * boardHeight + pad[_T] + pad[_B];
+    
+    echo("grid size", boardSizeW, boardSizeH);
     
     chamfer_edges = [
       chamfers[0] ? BACK+RIGHT : [0],
@@ -38,6 +43,7 @@ module grid(
     attachable(anchor, spin, orient, size=[boardSizeW, boardSizeH, tileThickness]) {
         difference() {
             cuboid([boardSizeW, boardSizeH, tileThickness], chamfer=4.2, edges=chamfer_edges);
+            move([(pad[_L]-pad[_R])/2, -(pad[_T]-pad[_B])/2, 0])
             union() {
                 grid_copies(spacing=tileSize, n=[boardWidth, boardHeight])
                     cut_tile(tileSize, tileThickness);
@@ -73,7 +79,7 @@ module grid(
         children();
     }
 }
-//grid();
+//grid(2, 3, pad=[1,2,3,4]);
 
 
 // Note: cut_tile Z anchor points are at tileThickness
