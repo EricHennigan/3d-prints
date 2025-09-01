@@ -47,10 +47,11 @@ module assembly() {
         // Right door
         cab_door(thick=thick, anchor=RIGHT, orient=BOT);
     }
-    
-    zmove(-80)
-      asm_back();
-    zmove(80)
+
+    asm_back();
+      
+    xmove(400)
+    xrot(180)
     xflip_copy()
         xmove(10)
         asm_door();
