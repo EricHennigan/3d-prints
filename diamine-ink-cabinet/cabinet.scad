@@ -28,17 +28,18 @@ module assembly() {
     // TODO: might want some clearance for the grid inside doors and back?
     
     module asm_back() {
+        pad = [0, (thick + .12)/2, 0, (thick + .12)/2];
         cab_back(thick=thick);
         color("black", 0.3)
         zmove(explode*thick) {
             move([ explode,  explode, 0])
-                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+FRONT+BOTTOM);
+                grid(6, 6, chamfers=[0,0,0,0], pad=pad, anchor=LEFT+FRONT+BOTTOM);
             move([-explode,  explode, 0])
-                grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+FRONT+BOTTOM);
+                grid(6, 6, chamfers=[0,0,0,0], pad=pad, anchor=RIGHT+FRONT+BOTTOM);
             move([ explode, -explode, 0])
-                grid(6, 6, chamfers=[0,0,0,0], anchor=LEFT+BACK+BOTTOM);
+                grid(6, 6, chamfers=[0,0,0,0], pad=pad, anchor=LEFT+BACK+BOTTOM);
             move([-explode, -explode, 0])
-                grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
+                grid(6, 6, chamfers=[0,0,0,0], pad=pad, anchor=RIGHT+BACK+BOTTOM);
         }
     }
     
@@ -166,11 +167,14 @@ module cab_back(
     anchor, spin, orient
 ) {
     depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
-    pad = [2 * thick + .25, 0]; // padding for the front doors
+    pad = [2 * thick + .24, 0]; // padding for the front doors
        
     sizeW = (Center[_W] + 2*Corner[_W]) * Tile_Size + 2 * thick + pad[_W];
     sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick + pad[_H];
     sizeZ = thick + depth;
+    
+    echo("cab_back internal size", sizeW - 2*thick, sizeH - 2*thick);
+    echo("cab_back external size", sizeW, sizeH);
     
     function offW(n) = grid_off(n) + sign(n) * pad[_W]/2;
     function offH(n) = grid_off(n) + sign(n) * pad[_H]/2;
@@ -219,6 +223,9 @@ module cab_door(
     sizeW = (Center[_W]/2 + Corner[_W]) * Tile_Size + 2 * thick;
     sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick;
     sizeZ = thick + depth;
+    
+    echo("cab_door internal size", sizeW - 2*thick, sizeH - 2*thick);
+    echo("cab_door external size", sizeW, sizeH);
     
     sideR = Center[_W]/2 * Tile_Size + thick;
 
