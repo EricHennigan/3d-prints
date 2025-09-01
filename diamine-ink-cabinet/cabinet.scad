@@ -20,7 +20,7 @@ Corner = [2, 2];
 
 // Make the cabinet
 explode = 5; // set =5 for printing
-//assembly();
+assembly();
 
 
 module assembly() {
@@ -162,7 +162,7 @@ module piece(gridW, gridH,
         children();
     }
 }
-piece(2, 3, thick=2.4, edges=[0, 1, 0, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
+//piece(2, 3, thick=2.4, edges=[0, 1, 0, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
 
 
     
@@ -241,7 +241,8 @@ module cab_door(
             // center-side
             xmove(explode) {
                 difference() {
-                    piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT);
+                    piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT,
+                        magnets=[0,5,0,0]);
                     
                     ymove(-6.65)
                     xmove(Center[_W]/2*Tile_Size + thick+trim)
@@ -261,11 +262,13 @@ module cab_door(
             
             xmove(explode)
             ymove(grid_off( Center[_H]) + explode)
-            piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT);
+            piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT,
+                magnets=[0,1,0,0]);
             
             xmove(explode)
             ymove(grid_off(-Center[_H]) - explode)
-            piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT);
+            piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT,
+                magnets=[0,1,0,0]);
             
             // edge-side
             piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
