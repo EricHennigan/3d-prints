@@ -20,7 +20,7 @@ Corner = [2, 2];
 
 // Make the cabinet
 explode = 5; // set =5 for printing
-assembly();
+//assembly();
 
 
 module assembly() {
@@ -126,6 +126,11 @@ module piece(gridW, gridH,
                 }
             }
             
+            // Cut out a recess for the LiteThickness grid
+            move([(edges[_L]-edges[_R])*thick/2, (edges[_B]-edges[_T])*thick/2, thick])
+            cuboid([Tile_Size * gridW + pad[_W] + .2, Tile_Size * gridH + pad[_H] + .2, 4.0 + .4],
+                chamfer=.1, edges=TOP, anchor=BOTTOM);
+            
             if (magnets[_T] > 0) {
                 ymove(sizeH/2 + trim)
                 zmove(thick)
@@ -157,7 +162,7 @@ module piece(gridW, gridH,
         children();
     }
 }
-//piece(2, 3, thick=2.4, edges=[0, 1, 1, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
+piece(2, 3, thick=2.4, edges=[0, 1, 0, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
 
 
     
