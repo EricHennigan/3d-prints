@@ -20,18 +20,15 @@ Corner = [2, 2];
 
 // Make the cabinet
 explode = 5; // set =5 for printing
-//assembly();
+assembly();
 
 
 module assembly() {
     thick = 2.4; // thickness of the walls
     // TODO: might want some clearance for the grid inside doors and back?
     
-    //module grid() {}
-    
     module asm_back() {
-        //cab_back(thick=thick);
-        /*
+        cab_back(thick=thick);
         color("black", 0.3)
         zmove(explode*thick) {
             move([ explode,  explode, 0])
@@ -43,17 +40,11 @@ module assembly() {
             move([-explode, -explode, 0])
                 grid(6, 6, chamfers=[0,0,0,0], anchor=RIGHT+BACK+BOTTOM);
         }
-        */
     }
+    
     module asm_door() {
         // Right door
         cab_door(thick=thick, anchor=RIGHT, orient=BOT);
-        
-        zmove(-explode*thick)
-        color("black", 0.3) {
-
-        }
-        
     }
     
     zmove(-80)
@@ -72,7 +63,6 @@ module piece(gridW, gridH,
     hinges=[0,0,0,0],
     pad=[0,0],
     hinge_inner=false,
-    onlay=[0,0,0],
     magnets=[0,0,0,0],
     anchor, spin, orient)
 {
@@ -84,7 +74,6 @@ module piece(gridW, gridH,
         ", hinges=", hinges,
         ", pad=", pad,
         ", hinge_inner=", hinge_inner,
-        ", onlay=", onlay,
         ", magnets=", magnets,
         ");"));
     
@@ -135,10 +124,6 @@ module piece(gridW, gridH,
                     }
                 }
             }
-            // remove the onlay
-            zmove(-clear/2)
-            cuboid(onlay + [clear, clear, clear], anchor=BOT);
-            
             
             if (magnets[_T] > 0) {
                 ymove(sizeH/2 + trim)
@@ -171,7 +156,7 @@ module piece(gridW, gridH,
         children();
     }
 }
-//piece(2, 3, thick=2.4, edges=[0, 1, 1, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, onlay=[55, 55, 0.2], magnets=[0,2,3,4]);
+//piece(2, 3, thick=2.4, edges=[0, 1, 1, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
 
 
     
@@ -251,6 +236,7 @@ module cab_door(
                     zmove(0.5-trim)
                     {
                         nib_relief(size=[100, 200, 0.5+2*trim], anchor=RIGHT);
+                        
                         ymove(20.5)
                         sphere(d=20.4);
                     }
@@ -273,12 +259,20 @@ module cab_door(
             piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
                 hinges=[0,0,0,11]);
 
+            // corner
             yflip_copy()
             ymove(grid_off( Center[_H]) + explode)
-            piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
-                hinges=[0,0,0,3], hinge_inner=true, onlay=[55, 55, .4])
-                position(CENTER+BOTTOM) orient(DOWN) zrot(-90)
-                    corner_onlay(size=[55, 55, 1]);
+            union() {
+                difference() {
+                    piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
+                        hinges=[0,0,0,3], hinge_inner=true);
+                
+                    move([-thick, thick, -trim])
+                    corner_relief(size=[55, 55, 0.5+2*trim], anchor=BOTTOM+FRONT+RIGHT);
+                }
+                move([-thick, thick, -trim])
+                corner_onlay(size=[55, 55, 0.5], anchor=BOTTOM+FRONT+RIGHT);
+            }
         
             // grids
             ymove(explode/2)
@@ -304,39 +298,50 @@ module cab_door(
         children();
     }
 }
-cab_door();
+//cab_door();
 
-module corner_onlay(
-    size = [70, 70, 5],
+
+module corner_relief(
+    size = [70, 70, 1],
     anchor, spin, orient
 ) {
-    echo(str("BOM corner_onlay(",
-        "size=", size,
-        ");"));
-    
     attachable(anchor, spin, orient, size=size) {
-        scale([size[0]/70, size[1]/70, size[2]/5])
-        move([-34, -34, -1.5])
-        union() {
-            linear_extrude(height = 1)
-            import(file="corner-onlay.svg", layer="gray0");
-            
-            linear_extrude(height = 2)
-            import(file="corner-onlay.svg", layer="gray1");
-            
-            linear_extrude(height = 3)
-            import(file="corner-onlay.svg", layer="gray2");
-            
-            linear_extrude(height = 4)
-            import(file="corner-onlay.svg", layer="gray3");
-            
-            move([-1, -1, 0])
-            cuboid([70, 70, 1], anchor=TOP+LEFT+FRONT);
-        }
+        scale([size[0]/70, size[1]/70, size[2]/1])
+        move([-34, -34, -0.5])
+        linear_extrude(height=1)
+            import(file="corner-onlay.svg", layer="Outline", convexity=10);
+        
         children();
     }
 }
-//corner_onlay(size=[10, 10, 1]) show_anchors(s=1);
+//corner_relief() show_anchors();
+
+
+module corner_onlay(
+    size = [70, 70, 1],
+    anchor, spin, orient
+) {
+    layers = [
+        "gray0",
+        "gray1",
+        "gray2",
+        "gray3",
+    ];
+
+    attachable(anchor, spin, orient, size=size) {
+        scale([size[0]/70, size[1]/70, size[2]/1])
+        move([-34, -34, -0.5])
+        for(layer = layers) {
+            linear_extrude(height=1)
+            import(file="corner-onlay.svg", layer=layer);
+         }
+         //move([-1, -1, 0])
+         //cuboid([70, 70, 1], anchor=TOP+LEFT+FRONT);
+        
+        children();
+    }
+}
+//corner_onlay() show_anchors(s=1);
 
 
 module nib_relief(
@@ -379,9 +384,11 @@ module nib_onlay(
                 linear_extrude(height=1)
                 import(file="nib-onlay.svg", layer=layer, convexity=10);
             }
-
+            
+            // chop off the parts that are outside the canvas
             ymove(-5)
-                cuboid([30, 210, 10], anchor=FRONT+LEFT);
+            cuboid([30, 210, 10], anchor=FRONT+LEFT);
+            
             cuboid([50, 20, 10], anchor=BACK);
         }
         children();
