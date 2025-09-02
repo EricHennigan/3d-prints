@@ -90,17 +90,19 @@ module piece(gridW, gridH,
         zmove(-(thick+depth)/2)
         difference() {
             union() {
-                cuboid([sizeW, sizeH, thick], anchor=BOT);
+                cuboid([sizeW, sizeH, thick+trim], anchor=BOT);
                 if (edges[_T]) {
-                    move([0, sizeH/2, thick])
-                    cuboid([sizeW, thick, depth], anchor=BOT+BACK);
+                    w = sizeW - (thick-trim) * (edges[_R] + edges[_L]);
+                    move([thick/2 * (edges[_L] - edges[_R]), sizeH/2, thick])
+                    cuboid([w, thick, depth], anchor=BOT+BACK);
+                    // TODO: add a hinge on this wall
                 }
                 if (edges[_R]) {
                     move([sizeW/2, 0, thick])
                     if (hinges[_R] > 0) {
                         diff()
                         cuboid([thick, sizeH, depth], anchor=BOT+RIGHT)
-                            position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)                        
+                            position(TOP+RIGHT) orient(anchor=RIGHT) zmove(-0.6)
                             knuckle_hinge(length=sizeH, segs=hinges[_R], inner=hinge_inner,
                                           offset=1.6, arm_height=1, teardrop=true,
                                           knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.85);
@@ -108,16 +110,18 @@ module piece(gridW, gridH,
                         cuboid([thick, sizeH, depth], anchor=BOT+RIGHT);
                     }
                 }
+                // TODO: adjust the size of this wall, so not interfere with hinge, see edges[_T]
                 if (edges[_B]) {
                     move([0, -sizeH/2, thick])
                     cuboid([sizeW, thick, depth], anchor=BOT+FRONT);
+                    // TODO: add a hinge on this wall
                 }
                 if (edges[_L]) {
                     move([-sizeW/2, 0, thick])
                     if (hinges[_L] > 0) {
                         diff()
                         cuboid([thick, sizeH, depth], anchor=BOT+LEFT)
-                            position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)                        
+                            position(TOP+LEFT) orient(anchor=LEFT) zmove(-0.6)
                             knuckle_hinge(length=sizeH, segs=hinges[_L], inner=hinge_inner,
                                           offset=1.6, arm_height=1, teardrop=true,
                                           knuckle_diam=3, knuckle_clearance=0.2, pin_diam=1.85);
