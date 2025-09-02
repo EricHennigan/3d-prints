@@ -80,7 +80,7 @@ module piece(gridW, gridH,
         ");"));
     
     function any(elems) = sum(elems) > 0 ? 1 : 0;
-    depth = Tile_Thickness + 7.5 * any(edges); // taken from /shelf:shelf.height, keep same as /cabinet:back.depth
+    depth = (Tile_Size + 1) * any(edges); // keep same as /cabinet:cab_back.depth, /cabinet:cab_front.depth
     sizeW = Tile_Size * gridW + thick * (edges[_R] + edges[_L]) + pad[_W]; 
     sizeH = Tile_Size * gridH + thick * (edges[_T] + edges[_B]) + pad[_H];
     echo("piece size: ", sizeW, sizeH);
@@ -176,7 +176,7 @@ module cab_back(
     thick=2.4,
     anchor, spin, orient
 ) {
-    depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
+    depth = Tile_Size + 1; // keep same as /cabinet:piece.depth, /cabinet:cab_front.depth
     pad = [2 * thick + .24, 0]; // padding for the front doors
        
     sizeW = (Center[_W] + 2*Corner[_W]) * Tile_Size + 2 * thick + pad[_W];
@@ -228,7 +228,7 @@ module cab_door(
     hinges=[0,0,0,0],
     anchor, spin, orient
 ) {
-    depth = Tile_Thickness + 7.5; // keep same as /cabinet:piece.depth
+    depth = Tile_Size + 1; // keep same as /cabinet:piece.depth, /cabinet:cab_back.depth
     
     sizeW = (Center[_W]/2 + Corner[_W]) * Tile_Size + 2 * thick;
     sizeH = (Center[_H] + 2*Corner[_H]) * Tile_Size + 2 * thick;
