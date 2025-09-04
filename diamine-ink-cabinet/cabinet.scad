@@ -30,8 +30,7 @@ module assembly() {
     module asm_back() {
         pad = [0, (thick + .12)/2, 0, (thick + .12)/2];
         cab_back(thick=thick);
-        color("black", 0.3)
-        zmove(explode*thick) {
+        zmove(Tile_Size * 1.2 * (explode > 1 ? 1 : 0)) {
             move([ explode,  explode, 0])
                 grid(6, 6, chamfers=[0,0,0,0], pad=pad, anchor=LEFT+FRONT+BOTTOM);
             move([-explode,  explode, 0])
@@ -262,7 +261,7 @@ module cab_door(
                 ymove(-6.65)
                 xmove(Center[_W]/2*Tile_Size + thick)
                 zmove(0.5-trim)
-                    nib_onlay(size=[100, 200, 0.5], anchor=RIGHT);
+                    nib_onlay(size=[100, 200, 0.5+2*trim], anchor=RIGHT);
             }
             
             xmove(explode)
@@ -291,12 +290,12 @@ module cab_door(
                     corner_relief(size=[55, 55, 0.5+2*trim], anchor=BOTTOM+FRONT+RIGHT);
                 }
                 move([-thick, thick, -trim])
-                corner_onlay(size=[55, 55, 0.5], anchor=BOTTOM+FRONT+RIGHT);
+                corner_onlay(size=[55, 55, 0.5+2*trim], anchor=BOTTOM+FRONT+RIGHT);
             }
-        
+
             // grids
             ymove(explode/2)
-            zmove(explode)
+            zmove(Tile_Size * 1.2 * (explode > 1 ? 1 : 0))
             difference() {
                 xmove(Corner[_W]/2*Tile_Size)
                 zmove(thick)
@@ -310,10 +309,9 @@ module cab_door(
             }
             
             ymove(-explode/2)
-            zmove(thick + explode)
+            zmove(Tile_Size * 1.2 * (explode > 1 ? 1 : 0))
             xmove(Corner[_W]/2*Tile_Size)
                 grid(6, 6, chamfers=[0,0,0,0], anchor=BOTTOM+BACK);
-                
         }        
         children();
     }
