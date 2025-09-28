@@ -8,6 +8,7 @@ include <BOSL2/hinges.scad>
 
 include <../opengrid/grid.scad>
 use <../opengrid/grid_vars.scad>
+use <../opengrid/connectors.scad>
 
 _T = 0; _R = 1; _B = 2; _L = 3;
 _W = 0; _H = 1;
@@ -43,20 +44,44 @@ module assembly() {
     }
     
     module asm_door() {
-        // Right door
-        cab_door(thick=thick, anchor=RIGHT, orient=BOT);
+        xmove(400)
+        xrot(180)
+        xflip_copy()
+            xmove(10)
+            cab_door(thick=thick, anchor=RIGHT, orient=BOT);
     }
 
     asm_back();
-      
-    xmove(400)
-    xrot(180)
-    xflip_copy()
-        xmove(10)
-        asm_door();
+    asm_door();
+    
+    xmove(-200) ymove(-10) butterfly();
+    xmove(-200) ymove(10) lite_connector();
 }
 
 function grid_off(n) = (n * Tile_Size) / 2;
+
+module butterfly(
+  thick=2.4-.5,
+  cut=false,
+  anchor, spin, orient)
+{
+    clearance = 0.2 * (cut ? 1 : 0);
+    attachable(anchor, spin, orient, size=[15, 10, thick+clearance]) {
+        union() {
+            cuboid([10, 5+clearance*2, thick+clearance]);
+            xmove(5)
+                cuboid([5+clearance, 10+clearance*2, thick+clearance],
+                       chamfer=2.5, edges=[FWD+LEFT, BACK+LEFT]);
+            xflip()
+            xmove(5)
+                cuboid([5+clearance, 10+clearance*2, thick+clearance],
+                       chamfer=2.5, edges=[FWD+LEFT, BACK+LEFT]);
+        }
+        children();
+    }
+}
+//butterfly() show_anchors(s=1);
+//butterfly(cut=true);
 
 module piece(gridW, gridH, 
     thick=2.4,
@@ -65,6 +90,7 @@ module piece(gridW, gridH,
     pad=[0,0],
     hinge_inner=false,
     magnets=[0,0,0,0],
+    butterfly=[0,0,0,0],
     anchor, spin, orient)
 {
     echo(str("BOM piece(",
@@ -89,7 +115,7 @@ module piece(gridW, gridH,
         zmove(-(thick+depth)/2)
         difference() {
             union() {
-                cuboid([sizeW, sizeH, thick+trim], anchor=BOT);
+                cuboid([sizeW, sizeH, thick+trim], anchor=BOT, chamfer=0.2, edges=BOT);
                 if (edges[_T]) {
                     w = sizeW - (thick-trim) * (edges[_R] + edges[_L]);
                     move([thick/2 * (edges[_L] - edges[_R]), sizeH/2, thick])
@@ -134,6 +160,52 @@ module piece(gridW, gridH,
             move([(edges[_L]-edges[_R])*thick/2, (edges[_B]-edges[_T])*thick/2, thick])
             cuboid([Tile_Size * gridW + pad[_W] + .2, Tile_Size * gridH + pad[_H] + .2, 4.0 + .4],
                 chamfer=.1, edges=TOP, anchor=BOTTOM);
+                
+            // Cut out a butterfly connector to join adjacent panels
+            if (edges[_T]) {
+                move([sizeW/2, sizeH/2-thick-trim, depth/2])
+                    butterfly(anchor=TOP, orient=FWD, spin=0, cut=true);
+                move([-sizeW/2, sizeH/2-thick-trim, depth/2])
+                    butterfly(anchor=TOP, orient=FWD, spin=0, cut=true);
+            }
+            if (edges[_R]) {
+                move([sizeW/2-thick-trim, sizeH/2, depth/2])
+                    butterfly(anchor=TOP, orient=LEFT, spin=90, cut=true);
+                move([sizeW/2-thick-trim, -sizeH/2, depth/2])
+                    butterfly(anchor=TOP, orient=LEFT, spin=90, cut=true);
+            }
+            if (edges[_B]) {
+                move([sizeW/2, -sizeH/2+thick+trim, depth/2])
+                    butterfly(anchor=BOT, orient=FWD, spin=0, cut=true);
+                move([-sizeW/2, -sizeH/2+thick+trim, depth/2])
+                    butterfly(anchor=BOT, orient=FWD, spin=0, cut=true);
+            }
+            if (edges[_L]) {
+                move([-sizeW/2+thick+trim, sizeH/2, depth/2])
+                    butterfly(anchor=BOT, orient=LEFT, spin=90, cut=true);
+                move([-sizeW/2+thick+trim, -sizeH/2, depth/2])
+                    butterfly(anchor=BOT, orient=LEFT, spin=90, cut=true);
+            }
+            if (butterfly[_T]) {
+                xcopies(spacing=sizeW/butterfly[_T], n=butterfly[_T])
+                    move([0, sizeH/2, thick+trim])
+                    butterfly(anchor=TOP, spin=90, cut=true);
+            }
+            if (butterfly[_R]) {
+                ycopies(spacing=sizeH/butterfly[_R], n=butterfly[_R])
+                    move([sizeW/2, 0, thick+trim])
+                    butterfly(anchor=TOP, cut=true);
+            }
+            if (butterfly[_B]) {
+                xcopies(spacing=sizeW/butterfly[_B], n=butterfly[_B])
+                    move([0, -sizeH/2, thick+trim])
+                    butterfly(anchor=TOP, spin=90, cut=true);
+            }
+            if (butterfly[_L]) {
+                ycopies(spacing=sizeH/butterfly[_L], n=butterfly[_L])
+                    move([-sizeW/2, 0, thick+trim])
+                    butterfly(anchor=TOP, cut=true);
+            }
             
             if (magnets[_T] > 0) {
                 ymove(sizeH/2 + trim)
@@ -166,7 +238,8 @@ module piece(gridW, gridH,
         children();
     }
 }
-//piece(2, 3, thick=2.4, edges=[0, 1, 0, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4]);
+//piece(2, 3, thick=2.4, edges=[0, 0, 0, 1], hinges=[0, 0, 0, 3], pad=[0, 0], hinge_inner=true, magnets=[0,2,3,4], butterfly=[4,2,3,1]);
+
 
 
     
@@ -192,34 +265,38 @@ module cab_back(
         zmove(-sizeZ/2)
         union() {
             // center
-            piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM);
+            piece(Center[_W], Center[_H], edges=[0,0,0,0], thick=thick, pad=pad, anchor=BOTTOM,
+                butterfly=[5,5,5,5]);
 
             // edges
             xflip_copy()
                 xmove(offW( Center[_W]) + explode)
                 piece(Corner[_W], Center[_H], edges=[0,1,0,0], thick=thick, anchor=LEFT+BOTTOM,
-                    hinges=[0,11,0,0], hinge_inner=true);
+                    hinges=[0,11,0,0], hinge_inner=true, butterfly=[2,0,2,5]);
             
             ymove(offH( Center[_H]) + explode)
-            piece(Center[_W], Corner[_H], edges=[1,0,0,0], thick=thick, pad=pad, anchor=FRONT+BOTTOM);
+            piece(Center[_W], Corner[_H], edges=[1,0,0,0], thick=thick, pad=pad, anchor=FRONT+BOTTOM,
+                butterfly=[0,2,5,2]);
             
             ymove(offH(-Center[_H]) - explode)
-            piece(Center[_W], Corner[_H], edges=[0,0,1,0], thick=thick, pad=pad, anchor=BACK+BOTTOM);
+            piece(Center[_W], Corner[_H], edges=[0,0,1,0], thick=thick, pad=pad, anchor=BACK+BOTTOM,
+                butterfly=[5,2,0,2]);
                 
             // corners
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH( Center[_H]) + explode, 0])
                 piece(Corner[_W], Corner[_H], edges=[1,1,0,0], thick=thick, anchor=FRONT+LEFT+BOTTOM,
-                    hinges=[0,3,0,0]);
+                    hinges=[0,3,0,0], butterfly=[0,0,2,2]);
             
             xflip_copy()
                 move([offW( Center[_W]) + explode, offH(-Center[_H]) - explode, 0])
                 piece(Corner[_W], Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BACK+LEFT+BOTTOM,
-                    hinges=[0,3,0,0]);
+                    hinges=[0,3,0,0], butterfly=[2,0,0,2]);
         }
         children();
     }
 }
+//cab_back();
 
 
 module cab_door(
@@ -246,7 +323,7 @@ module cab_door(
             xmove(explode) {
                 difference() {
                     piece(Center[_W]/2, Center[_H], edges=[0,1,0,0], thick=thick, anchor=BOTTOM+LEFT,
-                        magnets=[0,5,0,0]);
+                        magnets=[0,5,0,0], butterfly=[3,0,3,5]);
                     
                     ymove(-6.65)
                     xmove(Center[_W]/2*Tile_Size + thick+trim)
@@ -267,16 +344,16 @@ module cab_door(
             xmove(explode)
             ymove(grid_off( Center[_H]) + explode)
             piece(Center[_W]/2, Corner[_H], edges=[1,1,0,0], thick=thick, anchor=BOTTOM+FRONT+LEFT,
-                magnets=[0,1,0,0]);
+                magnets=[0,1,0,0], butterfly=[0,0,3,2]);
             
             xmove(explode)
             ymove(grid_off(-Center[_H]) - explode)
             piece(Center[_W]/2, Corner[_H], edges=[0,1,1,0], thick=thick, anchor=BOTTOM+BACK+LEFT,
-                magnets=[0,1,0,0]);
+                magnets=[0,1,0,0], butterfly=[3,0,0,2]);
             
             // edge-side
             piece(Corner[_W], Center[_H], edges=[0,0,0,1], thick=thick, anchor=BOTTOM+RIGHT,
-                hinges=[0,0,0,11]);
+                hinges=[0,0,0,11], butterfly=[2,5,2,0]);
 
             // corner
             yflip_copy()
@@ -284,7 +361,7 @@ module cab_door(
             union() {
                 difference() {
                     piece(Corner[_W], Corner[_H], edges=[1,0,0,1], thick=thick, anchor=BOTTOM+FRONT+RIGHT,
-                        hinges=[0,0,0,3], hinge_inner=true);
+                        hinges=[0,0,0,3], butterfly=[0,2,2,0], hinge_inner=true);
                 
                     move([-thick, thick, -trim])
                     corner_relief(size=[55, 55, 0.5+2*trim], anchor=BOTTOM+FRONT+RIGHT);
