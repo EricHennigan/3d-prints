@@ -7,8 +7,6 @@ Connects the ends of two bar clamps.
 from build123d import *
 from ocp_vscode import *
 
-length, width, thickness = 80.0, 60.0, 10.0
-
 sx, sy, sz = 30.5, 30.5, 26.0
 
 with BuildPart() as clamp_connector:
