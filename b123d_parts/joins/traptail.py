@@ -26,8 +26,9 @@ class TraptailJoin(BasePartObject):
         xlen: float | None = None,
         ylen: float | None = None,
         depth: float | None = None,
-        clearance: float = 0.07,
-        align: Align = (Align.CENTER)
+        clearance: float = 0.03,
+        align: Align = (Align.CENTER),
+        invert: bool = False,
     ):
         if not xlen:
             xlen = xsize / teeth / 3
@@ -45,18 +46,23 @@ class TraptailJoin(BasePartObject):
                 x_spacing=xspace+xlen, x_count=teeth+1,
                 y_spacing=0, y_count=1,
             ):
-                with Locations((0, ylen/2+clearance, -clearance)):
+                edge = {False: 1, True: -1}[invert] * (ylen/2 + clearance)
+                zmin = {False: 0, True: ysize-2*ylen}
+                zmax = {False: ylen, True: ysize-ylen}
+
+                with Locations((0, edge, -clearance)):
                     Wedge(xspace, depth, ysize-ylen,
-                          xmin=(xspace-xlen)/2, xmax=(xspace+xlen)/2,
-                          zmin=0, zmax=ylen,
-                          align=(align, Align.MIN, Align.CENTER),
-                          rotation=(90, 0, 0),
+                        xmin=(xspace-xlen)/2, xmax=(xspace+xlen)/2,
+                        zmin=zmin[invert], zmax=zmax[invert],
+                        align=(align, Align.MIN, Align.CENTER),
+                        rotation=(90, 0, 0),
                     )
+
                 sign = {Align.CENTER: 1, Align.MAX: 1, Align.MIN: -1}[align]
-                with Locations((sign*(xspace+xlen)/2, -ylen/2-clearance, -clearance)):
+                with Locations((sign*(xspace+xlen)/2, -edge, -clearance)):
                     Wedge(xspace, depth, ysize-ylen,
                           xmin=(xspace-xlen)/2, xmax=(xspace+xlen)/2,
-                          zmin=ysize-2*ylen, zmax=ysize-ylen,
+                          zmin=zmin[not invert], zmax=zmax[not invert],
                           align=(align, Align.MIN, Align.CENTER),
                           rotation=(90, 0, 0),
                     )
@@ -78,17 +84,14 @@ if __name__ == '__main__':
         Box(24, 3, 6, align=(Align.MIN, Align.MIN, Align.MIN))
 
         top_face = p.faces().sort_by(Axis.Z)[-1]
-        fillet(top_face.edges(), 0.2)
+        #fillet(top_face.edges(), 0.2)
 
         with Locations(top_face):
-            tj0 = TraptailJoin(24, 3, teeth=1, align=Align.CENTER)
-            tj0.color = Color(0xD1495B)
+            tj0 = TraptailJoin(24, 3, teeth=2, align=Align.CENTER)
+            tj0.color = Color('red')
 
-            with Locations((0, 3, 0)):
-                tj1 = TraptailJoin(24, 3, teeth=1, align=Align.MIN)
-                tj1.color = Color(0xD1495B)
-            with Locations((0, -3, 0)):
-                tj2 = TraptailJoin(24, 3, teeth=1, align=Align.MAX)
-                tj2.color = Color(0xD1495B)
+        with Locations(-top_face.offset(1.5)):
+            tj1 = TraptailJoin(24, 3, teeth=2, align=Align.CENTER)
+            tj1.color = Color('blue')
 
-    show_object([p, tj0, tj1, tj2], reset_camera=Camera.KEEP)
+    show_object([p, tj0, tj1], reset_camera=Camera.KEEP)
