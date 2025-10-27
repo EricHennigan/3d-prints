@@ -1,5 +1,4 @@
 from build123d import *
-from ocp_vscode import *
 
 
 class TraptailJoin(BasePartObject):
@@ -80,6 +79,7 @@ class TraptailJoin(BasePartObject):
 
 
 if __name__ == '__main__':
+    from ocp_vscode import *
     with BuildPart() as p:
         Box(24, 3, 6, align=(Align.MIN, Align.MIN, Align.MIN))
 
