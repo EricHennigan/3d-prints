@@ -32,3 +32,12 @@ The framework tile design specs don't have all the measurements! Ended up using 
    First layer height: 0.1mm
    Pause at layer 34 for a color change
    ```
+
+Learned a bit how to use Inkscape to draw the pattern. Program was really fiddly with the paths. I'd prefer having some amount of history. The process was:
+  1. Give the document a grid
+  2. Draw shapes and lines with a .4mm stroke width
+  3. Convert the shapes into paths
+  4. Go through a shape-editor where I select all the parts I want (very tedious)
+  5. Draw a rectangle for the border (0.1mm stroke) and covert it to a path
+  6. Intersect the paths (trim to inside of the rectangle)
+
