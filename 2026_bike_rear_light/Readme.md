@@ -1,4 +1,5 @@
 
+
 # Parts List
 
 | Part           | Needed | Purchased | Cost | Description                           |
@@ -15,8 +16,9 @@
 
 Measured the LED breaklight at 75mA, so it has high-ish voltage, but little current
 
+# 2026-06-19 First Draft
 
-# For Controlling the light (red=on, white=brake)
+## For Controlling the light (red=on, white=brake)
 
 ```
 +50V  ───── Lamp ───── Drain   IRF540N   Source ───── 0V/GND
@@ -34,7 +36,7 @@ Note: should use a larger resistor >300Ω to limit ~20mA from ATtiny85
 * [Arduino IRF540 Mosfetf](https://www.youtube.com/watch?v=BPyV6fDcEiw&t=3s)
 
 
-# For Controlling the power to ATtiny85 (
+## For Controlling the power to ATtiny85 (
 
 Power section
  * 50 V always-on input to LM2596HV IN+ / IN-.
@@ -107,3 +109,60 @@ ATtiny85 pin 6 (PB1) ---- 1k to 4.7k ----> 2N2222 base
 IRF540N source ---------------------------> GND
 IRF540N drain ----------------------------> switched return node
 ```
+
+# 2026-06-20 Second Draft
+
+After looking more closely at some of the spec, and some Kicad simulation, I realized that I need different parts.
+The mosfets should be a 'logical' variant, so that they can fully trigger from the 4.5v rather than a 10v signal.
+The power input circuit can use a couple of diodes to act as the OR gate providing 4.5v (from bike) or 5v (from buck) to the ATtiny.
+I want to turn the brakelight into an actual cable.
+
+For development, I want a breadboard and power circuit
+
+| Part           | Needed | Purchased | Cost | Description                     |
+|----------------|--------|-----------|------|---------------------------------|
+| IRL540N        |      2 |         5 | 2.41 | N-type Mosfet, 100V 33A         |
+| BAT85          |      2 |        50 | 1.68 | Schottky Diode D0-35            |
+| M6 5pin cable  | 1m 1f  |    1 pair | 3.04 | male & female cable pair        |
+| ZY12PDN        |      1 |         1 | 2.02 | USB-C power with post terminals |
+| breadboard     |      1 |         5 | 2.53 | solderable, various sizes       |
+
+These changes obsolete some parts already purchased:
+ - IRF540N, 2N2222
+
+Also realized that I need to get some breakaway header pins + socket so the ATtiny can be removed for programming.
+And KF2510 connectors + sockets to make the eBike + brake cables pluggable, board removable.
+
+## Models
+
+* https://github.com/yasir-shahzad/Digispark-ATTINY85
+  has 3D and schematics for the board!
+
+## More Revisions
+
+Then I figured out that I need the circuit to be a high-side control, because the brake light has common ground.
+The 2N2222 transistors are only rated for 40V, so now they are not suitable (but already purchased).
+And some other parts: like flux rosin, header pins, and connector cables.
+
+* [12v arduino high-side circuit](https://europe1.discourse-cdn.com/arduino/original/4X/a/4/9/a492336dbcc6dfbb94111606fce4d31aaf3bd7c3.jpeg)
+* [48v arduino high-side circuit](https://www.reddit.com/r/AskElectronics/comments/1lqwbhb/drive_pchannel_mosfet_switching_48v_with_3v3/)
+
+| Part              | Needed | Purchased  | Cost | Description              |
+|-------------------|--------|------------|------|--------------------------|
+| IRL540N           | Remove |            |      | N-type Mosfet, 100V 33A  |
+| 2N5551            |      2 |         25 | 1.33 | NPN transistors (100V)   |
+| FQP27P06          |      2 |         10 | 3.10 | P-Type Mosfet, -60V -27A |
+| KF2510 kit        |      1 |         40 | 2.83 | connect kit for cables   |
+| Female SMD socket |   9pin | 40pin * 10 | 2.82 | 2.54mm socket pins       |
+
+
+## Yet More Revisions
+
+The buck converter requires a constant HIGH signal on the "enable" pin to stay off.
+Consequently, I have to make a suicide circuit to control the 48v input to the converter.
+It needs another mosfet (got extras) and transistors (extras) and resistors (extras).
+We no longer need the diodes!
+
+| Part   | Needed | Purchased  | Cost | Description              |
+|--------|--------|------------|------|--------------------------|
+| BAT85  | Remove |            |      | Schottky Diode D0-35     |
