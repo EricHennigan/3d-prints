@@ -2724,8 +2724,16 @@
 		(uuid "1af6e988-5e2a-4221-a764-3a69a1733bc5")
 	)
 	(no_connect
+		(at 63.5 52.07)
+		(uuid "6e9f0b0d-4b4b-49c3-91d1-94f1e233379e")
+	)
+	(no_connect
 		(at 99.06 133.35)
 		(uuid "a5cf58ac-90d6-4419-812c-87a0e00a9f57")
+	)
+	(no_connect
+		(at 63.5 41.91)
+		(uuid "f98e2af2-0621-47a0-816a-97bb6d25250c")
 	)
 	(wire
 		(pts
@@ -2959,7 +2967,7 @@
 	)
 	(wire
 		(pts
-			(xy 156.21 44.45) (xy 156.21 49.53)
+			(xy 151.13 44.45) (xy 151.13 49.53)
 		)
 		(stroke
 			(width 0)
@@ -3019,7 +3027,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 44.45) (xy 151.13 49.53)
+			(xy 156.21 44.45) (xy 156.21 49.53)
 		)
 		(stroke
 			(width 0)
@@ -3248,7 +3256,7 @@
 		(uuid "3b671a8a-0bbc-413a-98af-d90a494191e3")
 	)
 	(label "BATT"
-		(at 151.13 46.99 0)
+		(at 156.21 46.99 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3328,7 +3336,7 @@
 		(uuid "7fbc9198-6f76-41f7-8357-61737227d7c1")
 	)
 	(label "SYS"
-		(at 156.21 48.26 0)
+		(at 151.13 45.72 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3831,7 +3839,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 69.85 117.348 90)
 			(effects
 				(font
@@ -3899,7 +3907,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x06_P1.00mm_Vertical"
 			(at 58.42 46.99 0)
 			(effects
 				(font
@@ -4021,7 +4029,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 156.21 44.45 0)
+		(at 151.13 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4029,7 +4037,7 @@
 		(dnp no)
 		(uuid "4e9307ee-5188-45b6-9f1e-c9a48fcae3b9")
 		(property "Reference" "#PWR014"
-			(at 156.21 48.26 0)
+			(at 151.13 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4038,7 +4046,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 156.21 40.386 0)
+			(at 151.13 40.386 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4046,7 +4054,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 156.21 44.45 0)
+			(at 151.13 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4055,7 +4063,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 156.21 44.45 0)
+			(at 151.13 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4064,7 +4072,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 156.21 44.45 0)
+			(at 151.13 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4086,7 +4094,7 @@
 	)
 	(symbol
 		(lib_id "power:+48V")
-		(at 151.13 44.45 0)
+		(at 156.21 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4094,7 +4102,7 @@
 		(dnp no)
 		(uuid "50914515-6167-4afb-acad-836c8fd6a309")
 		(property "Reference" "#PWR012"
-			(at 151.13 48.26 0)
+			(at 156.21 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4103,7 +4111,7 @@
 			)
 		)
 		(property "Value" "+48V"
-			(at 151.13 40.894 0)
+			(at 156.21 40.894 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4111,7 +4119,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 151.13 44.45 0)
+			(at 156.21 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4120,7 +4128,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 151.13 44.45 0)
+			(at 156.21 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4129,7 +4137,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+48V\""
-			(at 151.13 44.45 0)
+			(at 156.21 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4299,7 +4307,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 62.23 123.698 90)
 			(effects
 				(font
@@ -4367,7 +4375,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 36.83 136.398 90)
 			(effects
 				(font
@@ -4566,7 +4574,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 152.4 123.698 90)
 			(effects
 				(font
@@ -4701,7 +4709,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 159.258 118.11 90)
 			(effects
 				(font
@@ -4835,7 +4843,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 137.922 119.38 90)
 			(effects
 				(font
@@ -4903,7 +4911,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x04_P1.00mm_Vertical"
 			(at 153.67 54.61 0)
 			(effects
 				(font
@@ -5121,7 +5129,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "LED_THT:LED_D3.0mm"
 			(at 238.76 118.11 0)
 			(effects
 				(font
@@ -5207,7 +5215,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 36.83 116.078 90)
 			(effects
 				(font
@@ -5277,7 +5285,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 224.282 134.62 90)
 			(effects
 				(font
@@ -5607,7 +5615,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "LED_THT:LED_D3.0mm"
 			(at 170.18 133.35 0)
 			(effects
 				(font
@@ -5694,7 +5702,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x03_P1.00mm_Vertical"
 			(at 45.72 50.8 0)
 			(effects
 				(font
@@ -5830,7 +5838,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x05_P1.00mm_Vertical_SMD_Pin1Left"
 			(at 224.79 53.34 0)
 			(effects
 				(font
@@ -5907,7 +5915,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
 			(at 217.17 131.318 90)
 			(effects
 				(font
