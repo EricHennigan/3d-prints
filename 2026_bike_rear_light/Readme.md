@@ -166,3 +166,8 @@ We no longer need the diodes!
 | Part   | Needed | Purchased  | Cost | Description              |
 |--------|--------|------------|------|--------------------------|
 | BAT85  | Remove |            |      | Schottky Diode D0-35     |
+
+# 2026-06-21
+
+Found a KiCAD model for the ATtiny
+ * [swww1235](https://github.com/sww1235/KiCAD-Libraries/tree/master/SW-Digistump.pretty)
