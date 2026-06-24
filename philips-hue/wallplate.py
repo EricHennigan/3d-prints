@@ -21,7 +21,7 @@ depth = 14
 
 AlignCCT = (Align.CENTER, Align.CENTER, Align.MAX)
 
-gangs = [HueRocker()]*4
+gangs = [HueRocker()]
 
 with BuildPart() as plate:
     thick = 2
@@ -36,7 +36,7 @@ with BuildPart() as plate:
     offset(amount=-thick, openings=wall_face)
 
     # Place the screw supports
-    plate_clearance = 2.5 # Distance between wall and screw supports
+    plate_clearance = 3 # Distance between wall and screw supports
     with GridLocations(x_spacing=width, x_count=len(gangs), y_spacing=width + 2*IN, y_count=2):
         with Locations(wall_face.offset(-plate_clearance)):
             c = Cylinder(radius=5, height=depth-plate_clearance,

@@ -10,8 +10,8 @@ class HueRocker(Compound):
     def __init__(self):
         height = 91.7
         width = 34.7
-        depth = 5.6
-        recess = 2.5
+        depth = 5.1
+        recess = 2 
 
         ALIGN_TOP = (Align.CENTER, Align.CENTER, Align.MAX)
 
