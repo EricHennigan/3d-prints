@@ -171,3 +171,49 @@ We no longer need the diodes!
 
 Found a KiCAD model for the ATtiny
  * [swww1235](https://github.com/sww1235/KiCAD-Libraries/tree/master/SW-Digistump.pretty)
+
+# 2026-07-02
+
+## Software
+
+Attempted to use a snap package
+ - wants 32 bit libs during compilation step.
+Attempted to use a deb package
+ - could not install, don't know why
+Attempted to use the official digistump package
+ - but the micronucleus is too old (cannot locate device on usb)
+
+Fortunately, is easy to clear state by `rm -rf ~/.arduino15`
+
+
+Install
+```
+wget https://github.com/arduino/arduino-cli/releases/download/v1.5.1/arduino-cli_1.5.1-1_amd64.deb
+sudo apt install ./arduino-cli_1.5.1-1_amd64.deb
+sudo apt install libusb-1.0-0-dev # for the newer micronucleus
+```
+
+Setup (had to pick a version with modern micronucleus)
+```
+old_url="https://raw.githubusercontent.com/digistump/arduino-boards-index/master/package_digistump_index.json"
+url="https://raw.githubusercontent.com/ArminJo/DigistumpArduino/master/package_digistump_index.json"
+arduino-cli config set board_manager.additional_urls $url
+arduino-cli core update-index
+arduino-cli core install digistump:avr
+```
+
+Additional Steps: Did not know about the usb assignment
+```
+Copy https://github.com/micronucleus/micronucleus/blob/master/commandline/49-micronucleus.rules
+To /etc/udev/rules.d
+sudo udevadm control --reload-rules
+```
+
+Arduino expects that the code file is a dir of the same name.
+
+Program, `cd code`
+Do not plug it in until prompted by the 'upload' step
+```
+arduino-cli compile --fqbn digistump:avr:digispark-tiny code.ino
+arduino-cli upload --fqbn digistump:avr:digispark-tiny code.ino
+```
