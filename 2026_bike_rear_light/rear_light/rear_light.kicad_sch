@@ -5,177 +5,6 @@
 	(uuid "b76567e8-d4a2-4d0a-93c6-1ddc496627b1")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Connector_Generic:Conn_01x03"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "J"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Conn_01x03"
-				(at 0 -5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "connector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Connector*:*_1x??_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Conn_01x03_1_1"
-				(rectangle
-					(start -1.27 3.81)
-					(end 1.27 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(rectangle
-					(start -1.27 2.667)
-					(end 0 2.413)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 0.127)
-					(end 0 -0.127)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 -2.413)
-					(end 0 -2.667)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 2.54 0)
-					(length 3.81)
-					(name "Pin_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "Pin_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 -2.54 0)
-					(length 3.81)
-					(name "Pin_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Connector_Generic:Conn_01x04"
 			(pin_names
 				(offset 1.016)
@@ -605,24 +434,23 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector_Generic:Conn_01x06"
+		(symbol "Connector_Generic:Conn_01x09"
 			(pin_names
 				(offset 1.016)
-				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "J"
-				(at 0 7.62 0)
+				(at 0 12.7 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "Conn_01x06"
-				(at 0 -10.16 0)
+			(property "Value" "Conn_01x09"
+				(at 0 -12.7 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -647,7 +475,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connector, single row, 01x09, script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -674,16 +502,38 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_01x06_1_1"
+			(symbol "Conn_01x09_1_1"
 				(rectangle
-					(start -1.27 6.35)
-					(end 1.27 -8.89)
+					(start -1.27 11.43)
+					(end 1.27 -11.43)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
 						(type background)
+					)
+				)
+				(rectangle
+					(start -1.27 10.287)
+					(end 0 10.033)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 7.747)
+					(end 0 7.493)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(rectangle
@@ -752,8 +602,19 @@
 						(type none)
 					)
 				)
+				(rectangle
+					(start -1.27 -10.033)
+					(end 0 -10.287)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(pin passive line
-					(at -5.08 5.08 0)
+					(at -5.08 10.16 0)
 					(length 3.81)
 					(name "Pin_1"
 						(effects
@@ -771,7 +632,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 2.54 0)
+					(at -5.08 7.62 0)
 					(length 3.81)
 					(name "Pin_2"
 						(effects
@@ -789,7 +650,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at -5.08 5.08 0)
 					(length 3.81)
 					(name "Pin_3"
 						(effects
@@ -807,7 +668,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -2.54 0)
+					(at -5.08 2.54 0)
 					(length 3.81)
 					(name "Pin_4"
 						(effects
@@ -825,7 +686,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -5.08 0)
+					(at -5.08 0 0)
 					(length 3.81)
 					(name "Pin_5"
 						(effects
@@ -843,7 +704,7 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -7.62 0)
+					(at -5.08 -2.54 0)
 					(length 3.81)
 					(name "Pin_6"
 						(effects
@@ -853,6 +714,60 @@
 						)
 					)
 					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -5.08 0)
+					(length 3.81)
+					(name "Pin_7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "Pin_8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -10.16 0)
+					(length 3.81)
+					(name "Pin_9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1153,185 +1068,6 @@
 					(at 0 -3.81 90)
 					(length 1.27)
 					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Regulator_Switching:GL2576-5.0TA5R"
-			(pin_names
-				(offset 0.254)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at -10.16 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "GL2576-5.0TA5R"
-				(at 0 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "Package_TO_SOT_SMD:TO-263-5_TabPin3"
-				(at 0 -6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-						(italic yes)
-					)
-					(justify left)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.dianyuan.com/bbs/u/54/437861181916300.pdf"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "5V 3A, 52KHz Step Down Converter, TO263-5 (D2-PAK)"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "5V 3A 52KHz Buck DC/DC"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TO?263*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "GL2576-5.0TA5R_0_1"
-				(rectangle
-					(start -10.16 5.08)
-					(end 10.16 -5.08)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "GL2576-5.0TA5R_1_1"
-				(pin power_in line
-					(at -12.7 2.54 0)
-					(length 2.54)
-					(name "VIN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -12.7 -2.54 0)
-					(length 2.54)
-					(name "~{ON}/OFF"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -7.62 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 12.7 2.54 180)
-					(length 2.54)
-					(name "FB"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 12.7 -2.54 180)
-					(length 2.54)
-					(name "OUT"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2203,6 +1939,162 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "yaaj_dcdc_stepdown_lm2596:YAAJ_DCDC_StepDown_LM2596"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at -5.08 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "YAAJ_DCDC_StepDown_LM2596"
+				(at 0 11.43 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.27 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at -1.27 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "module : adjustable step down module 3.2V-40V to 1.25V-35V 3A"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "module stepdown step down buck converter DCDC DC"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "YAAJ_DCDC_StepDown_LM2596_0_1"
+				(rectangle
+					(start -7.62 5.08)
+					(end 7.62 -5.08)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "YAAJ_DCDC_StepDown_LM2596_1_1"
+				(text "Y@@V"
+					(at 6.1976 -4.2672 0)
+					(effects
+						(font
+							(size 0.508 0.508)
+						)
+					)
+				)
+				(pin power_in line
+					(at -10.16 2.54 0)
+					(length 2.54)
+					(name "Vin"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 2.54 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 10.16 2.54 180)
+					(length 2.54)
+					(name "Vout"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(rectangle
 		(start 25.4 101.6)
@@ -2227,6 +2119,17 @@
 		)
 		(uuid "7c9c3bc2-e7a5-4390-8007-a4a093b70de5")
 	)
+	(text "ATtiny85\nDev Board\nUSB-A male"
+		(exclude_from_sim no)
+		(at 26.67 29.464 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "90cfac53-9f1b-46f5-b6b8-7426a1d53f49")
+	)
 	(text "VIN = unregulated (7-12V) input\nVCC = regulated 5v output"
 		(exclude_from_sim no)
 		(at 34.544 68.072 0)
@@ -2247,26 +2150,6 @@
 			)
 		)
 		(uuid "ee9bb221-651d-4323-a393-ff0f00584344")
-	)
-	(text_box "ATtiny85\nDev Board\nUSB-A male"
-		(exclude_from_sim no)
-		(at 25.654 25.4 0)
-		(size 58.166 50.8)
-		(margins 0.9525 0.9525 0.9525 0.9525)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill
-			(type none)
-		)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left top)
-		)
-		(uuid "9cdbd302-9755-41d2-bc53-75a8c7e38407")
 	)
 	(text_box "Brake Light Control"
 		(exclude_from_sim no)
@@ -2403,6 +2286,12 @@
 		(uuid "d9bb67ef-2159-4cb8-a107-79bd263a5712")
 	)
 	(junction
+		(at 86.36 143.51)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dfee5907-3879-4639-9a78-ded28974e33d")
+	)
+	(junction
 		(at 157.48 121.92)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2411,18 +2300,6 @@
 	(no_connect
 		(at 153.67 49.53)
 		(uuid "1af6e988-5e2a-4221-a764-3a69a1733bc5")
-	)
-	(no_connect
-		(at 63.5 52.07)
-		(uuid "6e9f0b0d-4b4b-49c3-91d1-94f1e233379e")
-	)
-	(no_connect
-		(at 99.06 133.35)
-		(uuid "a5cf58ac-90d6-4419-812c-87a0e00a9f57")
-	)
-	(no_connect
-		(at 63.5 41.91)
-		(uuid "f98e2af2-0621-47a0-816a-97bb6d25250c")
 	)
 	(wire
 		(pts
@@ -2433,6 +2310,16 @@
 			(type default)
 		)
 		(uuid "0297da2a-5274-4271-8258-c19f0219dbad")
+	)
+	(polyline
+		(pts
+			(xy 25.146 25.4) (xy 25.146 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09365cac-428e-4334-96b2-ada1f50a3fa5")
 	)
 	(wire
 		(pts
@@ -2493,6 +2380,26 @@
 			(type default)
 		)
 		(uuid "1fd93114-829d-4004-97e3-1f856c0e6ea5")
+	)
+	(wire
+		(pts
+			(xy 58.42 38.1) (xy 58.42 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "22fe469f-1732-4109-a004-f5cc13657695")
+	)
+	(wire
+		(pts
+			(xy 58.42 44.45) (xy 63.5 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2cfd61ec-3769-4787-b72c-165f9a486129")
 	)
 	(wire
 		(pts
@@ -2576,6 +2483,16 @@
 	)
 	(wire
 		(pts
+			(xy 60.96 38.1) (xy 58.42 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5fd21dd2-588e-46f3-afd5-a9636564b957")
+	)
+	(wire
+		(pts
 			(xy 157.48 121.92) (xy 158.75 121.92)
 		)
 		(stroke
@@ -2623,6 +2540,16 @@
 			(type default)
 		)
 		(uuid "706fe77a-24ab-4e0d-95b2-3c99a75ec084")
+	)
+	(wire
+		(pts
+			(xy 81.28 143.51) (xy 86.36 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7072b14a-d018-4ea2-9fc5-d95a3e86e5e8")
 	)
 	(wire
 		(pts
@@ -2676,6 +2603,16 @@
 	)
 	(wire
 		(pts
+			(xy 60.96 40.64) (xy 58.42 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "81b6ce63-26ca-4f31-9aff-e1cacc694936")
+	)
+	(wire
+		(pts
 			(xy 151.13 44.45) (xy 151.13 49.53)
 		)
 		(stroke
@@ -2703,6 +2640,16 @@
 			(type default)
 		)
 		(uuid "8addc200-7968-458a-8ade-549c9ed3f940")
+	)
+	(polyline
+		(pts
+			(xy 83.82 76.2) (xy 83.82 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94a35085-c533-4785-8ca7-0e7fdb3abbe9")
 	)
 	(wire
 		(pts
@@ -2746,13 +2693,13 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 39.37) (xy 68.58 39.37)
+			(xy 58.42 52.07) (xy 63.5 52.07)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b7e7295b-020f-4156-8882-d020a5a305c6")
+		(uuid "b40abbc0-b1be-4ccb-96d9-0d0aca959cc3")
 	)
 	(wire
 		(pts
@@ -2763,6 +2710,26 @@
 			(type default)
 		)
 		(uuid "bb8bc30e-ccb6-4545-bf74-64b306206563")
+	)
+	(wire
+		(pts
+			(xy 58.42 40.64) (xy 58.42 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bdb425e9-ce25-481a-8b55-aa647db90738")
+	)
+	(wire
+		(pts
+			(xy 60.96 35.56) (xy 58.42 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c016c53a-9043-4556-97cd-76ae85f026e3")
 	)
 	(wire
 		(pts
@@ -2784,15 +2751,25 @@
 		)
 		(uuid "ca6e1a0b-153a-41e2-bbe0-40334b4653f3")
 	)
-	(wire
+	(polyline
 		(pts
-			(xy 63.5 46.99) (xy 68.58 46.99)
+			(xy 25.146 76.2) (xy 83.82 76.2)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d184000f-6418-4cab-8e50-a950445f47b7")
+		(uuid "d0b3819a-ce3d-4b84-8825-375239fab0b7")
+	)
+	(wire
+		(pts
+			(xy 58.42 35.56) (xy 58.42 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "deb7f9c8-b108-4861-bcbc-49c08dfe50d1")
 	)
 	(wire
 		(pts
@@ -2816,16 +2793,6 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 49.53) (xy 68.58 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e097494f-9ee4-409b-af77-be75c3886b23")
-	)
-	(wire
-		(pts
 			(xy 229.87 116.84) (xy 238.76 116.84)
 		)
 		(stroke
@@ -2833,6 +2800,16 @@
 			(type default)
 		)
 		(uuid "e3ebc8f5-dfde-4300-82c2-4a78dbdafe3c")
+	)
+	(polyline
+		(pts
+			(xy 83.82 25.4) (xy 25.146 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e552b506-f760-4d1c-ac39-d05de5ac7b94")
 	)
 	(wire
 		(pts
@@ -2876,16 +2853,6 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 44.45) (xy 68.58 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f26d63f1-fe88-4fd4-bb07-0f92e402fb5b")
-	)
-	(wire
-		(pts
 			(xy 229.87 50.8) (xy 236.22 50.8)
 		)
 		(stroke
@@ -2906,6 +2873,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 49.53) (xy 58.42 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f82b128f-87e1-411a-a6a0-2124b6e66f7c")
+	)
+	(wire
+		(pts
 			(xy 238.76 129.54) (xy 238.76 133.35)
 		)
 		(stroke
@@ -2914,8 +2891,18 @@
 		)
 		(uuid "fc28f95a-71c9-45d7-948f-c1656d486c6b")
 	)
+	(polyline
+		(pts
+			(xy 83.566 25.4) (xy 83.82 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fc771a0c-7780-4e06-b802-68561ab79f18")
+	)
 	(label "BRAKE_LIGHT"
-		(at 68.58 46.99 0)
+		(at 63.5 52.07 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2925,7 +2912,7 @@
 		(uuid "0a7b17d9-e8c1-4772-a4d5-0d12fa4878ac")
 	)
 	(label "TAIL_LIGHT"
-		(at 68.58 49.53 0)
+		(at 63.5 54.61 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2955,7 +2942,7 @@
 		(uuid "2ca4f5f5-6231-434f-9998-a4fbe0a1572e")
 	)
 	(label "PB2"
-		(at 63.5 46.99 0)
+		(at 58.42 52.07 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2975,7 +2962,7 @@
 		(uuid "457a8801-a4fd-426a-b90c-6945b1e7da00")
 	)
 	(label "SYS_PWR_READ"
-		(at 68.58 44.45 0)
+		(at 63.5 49.53 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2985,7 +2972,7 @@
 		(uuid "497517c2-08e7-4506-854c-d96e11308fd8")
 	)
 	(label "PB1"
-		(at 63.5 49.53 0)
+		(at 58.42 54.61 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3005,7 +2992,7 @@
 		(uuid "62e5f5a4-3cfa-4b56-b6c9-f5059fa5a32b")
 	)
 	(label "PB4"
-		(at 63.5 41.91 0)
+		(at 58.42 46.99 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3045,7 +3032,7 @@
 		(uuid "8ef10373-b86a-43df-b48d-e51712bdb6b4")
 	)
 	(label "PB5"
-		(at 63.5 39.37 0)
+		(at 58.42 44.45 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3095,7 +3082,7 @@
 		(uuid "c7ce4dfe-301d-4552-b730-579e73753c51")
 	)
 	(label "PB0"
-		(at 63.5 52.07 0)
+		(at 58.42 57.15 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3135,7 +3122,7 @@
 		(uuid "e329dadf-e4f8-419d-aa75-c8c6f70b4f33")
 	)
 	(label "PWR_CONTROL"
-		(at 68.58 39.37 0)
+		(at 63.5 44.45 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3155,7 +3142,7 @@
 		(uuid "f93cf933-d5e1-4a3d-a1ed-95ec056bf3c1")
 	)
 	(label "PB3"
-		(at 63.5 44.45 0)
+		(at 58.42 49.53 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3198,22 +3185,22 @@
 	)
 	(global_label "VCC"
 		(shape input)
-		(at 43.18 55.88 270)
+		(at 60.96 35.56 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
 		(uuid "65f3af1e-6e28-4973-85ca-b8819b0c74d6")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 43.18 62.4938 90)
+			(at 67.5738 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -3242,29 +3229,7 @@
 	)
 	(global_label "GND"
 		(shape input)
-		(at 45.72 55.88 270)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a7b9ecc6-57ed-4ad1-81dc-53babab41561")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 45.72 62.7357 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "VIN"
-		(shape input)
-		(at 99.06 138.43 0)
+		(at 60.96 38.1 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -3272,9 +3237,9 @@
 			)
 			(justify left)
 		)
-		(uuid "b7334202-a15c-4d4f-be9d-d0da08e49db5")
+		(uuid "a7b9ecc6-57ed-4ad1-81dc-53babab41561")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 105.0691 138.43 0)
+			(at 67.8157 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3286,22 +3251,44 @@
 	)
 	(global_label "VIN"
 		(shape input)
-		(at 48.26 55.88 270)
+		(at 93.98 133.35 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "e5d57b24-934b-4000-aaf9-c8e0c544bad3")
+		(uuid "b7334202-a15c-4d4f-be9d-d0da08e49db5")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 48.26 61.8891 90)
+			(at 99.9891 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "VIN"
+		(shape input)
+		(at 60.96 40.64 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e5d57b24-934b-4000-aaf9-c8e0c544bad3")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 66.9691 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -3408,7 +3395,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 210.312 121.92 90)
 			(effects
 				(font
@@ -3702,7 +3689,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 69.85 117.348 90)
 			(effects
 				(font
@@ -3845,7 +3832,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 224.79 126.238 90)
 			(effects
 				(font
@@ -3914,7 +3901,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 231.648 120.65 90)
 			(effects
 				(font
@@ -3951,86 +3938,6 @@
 			(project "rear_light"
 				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
 					(reference "R10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x06")
-		(at 58.42 46.99 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3e1e3926-98dd-42c6-8e11-8bcfc0a57d8a")
-		(property "Reference" "ATtiny85"
-			(at 58.42 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Conn_01x06"
-			(at 58.42 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x06_P1.00mm_Vertical"
-			(at 58.42 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 58.42 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 58.42 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "d95aade9-0dee-456b-b2ed-dd937ccf9a78")
-		)
-		(pin "2"
-			(uuid "d8e776c9-cf5c-459f-9712-2d760dadb6d1")
-		)
-		(pin "1"
-			(uuid "4f218eaa-2d24-4c98-b145-5634cb3e3f77")
-		)
-		(pin "3"
-			(uuid "a1714618-1137-4608-a851-c8f48d35d208")
-		)
-		(pin "5"
-			(uuid "5bac425a-affb-4ff6-a56a-8e6b57676555")
-		)
-		(pin "6"
-			(uuid "0e247e8f-7076-4428-984e-cc26bf7d3def")
-		)
-		(instances
-			(project ""
-				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
-					(reference "ATtiny85")
 					(unit 1)
 				)
 			)
@@ -4167,44 +4074,33 @@
 		)
 	)
 	(symbol
-		(lib_id "Regulator_Switching:GL2576-5.0TA5R")
-		(at 86.36 135.89 0)
+		(lib_id "Connector_Generic:Conn_01x09")
+		(at 53.34 46.99 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "51a0834d-b6b2-4f8e-99d5-e5a204d355b8")
-		(property "Reference" "U1"
-			(at 86.36 125.73 0)
+		(uuid "517bcb00-8885-499d-9a7e-f724bf7b0388")
+		(property "Reference" "ATtiny85"
+			(at 53.34 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "LM2596HV"
-			(at 86.36 128.27 0)
+		(property "Value" "Conn_01x09"
+			(at 53.34 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:TO-263-5_TabPin3"
-			(at 86.36 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.dianyuan.com/bbs/u/54/437861181916300.pdf"
-			(at 86.36 135.89 0)
+		(property "Footprint" "models:Digispark"
+			(at 53.34 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4212,8 +4108,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "5V 3A, 52KHz Step Down Converter, TO263-5 (D2-PAK)"
-			(at 86.36 135.89 0)
+		(property "Datasheet" "~"
+			(at 53.34 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4221,8 +4117,8 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Library" "models/LM2596_5P0_TRANS.LIB"
-			(at 86.36 135.89 0)
+		(property "Description" "Generic connector, single row, 01x09, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 53.34 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4230,61 +4126,37 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Name" "COMP_BASIC_GEN"
-			(at 86.36 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
+		(pin "8"
+			(uuid "2a2d2563-2037-4bed-add3-e12ed34fa2a8")
 		)
-		(property "Sim.Device" "SUBCKT"
-			(at 86.36 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=INP 2=INM 3=Y"
-			(at 86.36 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Params" "VDD=42"
-			(at 86.36 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "e4fa9fa8-fe19-4417-829a-28d90552ff8a")
-		)
-		(pin "4"
-			(uuid "721ff65b-ec38-43fe-8aed-4031f43686a6")
-		)
-		(pin "5"
-			(uuid "da4cee14-b7e5-459c-bbbf-37faa1bc6d0b")
+		(pin "9"
+			(uuid "674cfaab-9faa-4e72-a4b1-1c4840f6bf5c")
 		)
 		(pin "1"
-			(uuid "0923e9e1-6e1d-47d1-9cc3-39e1a97b8f03")
+			(uuid "d879713f-32d3-43fd-b4d5-30f7c05de49d")
+		)
+		(pin "4"
+			(uuid "04604fe8-0047-43c4-b4b2-508ab1a635fb")
+		)
+		(pin "3"
+			(uuid "31e9010b-964a-4927-9fb5-5e73720c74fa")
 		)
 		(pin "2"
-			(uuid "ca5bdfec-9c64-4428-b6fd-191f2ce1cc7a")
+			(uuid "cc35eac4-5a2b-474c-ad69-86715612a649")
+		)
+		(pin "5"
+			(uuid "d284d2c7-8d70-4704-9a10-0bd317679cdc")
+		)
+		(pin "6"
+			(uuid "2064a925-9b67-4c6e-b1c2-3d5e90c3351c")
+		)
+		(pin "7"
+			(uuid "512fd843-e919-430d-b720-c899da469ad2")
 		)
 		(instances
-			(project "rear_light"
+			(project ""
 				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
-					(reference "U1")
+					(reference "ATtiny85")
 					(unit 1)
 				)
 			)
@@ -4316,7 +4188,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 62.23 123.698 90)
 			(effects
 				(font
@@ -4384,7 +4256,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 36.83 136.398 90)
 			(effects
 				(font
@@ -4658,7 +4530,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 152.4 123.698 90)
 			(effects
 				(font
@@ -4793,7 +4665,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 159.258 118.11 90)
 			(effects
 				(font
@@ -4927,7 +4799,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P5.08mm_Vertical"
 			(at 137.922 119.38 90)
 			(effects
 				(font
@@ -5211,7 +5083,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 36.83 116.078 90)
 			(effects
 				(font
@@ -5281,7 +5153,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P1.90mm_Vertical"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
 			(at 34.798 139.7 90)
 			(effects
 				(font
@@ -5475,6 +5347,80 @@
 		)
 	)
 	(symbol
+		(lib_id "yaaj_dcdc_stepdown_lm2596:YAAJ_DCDC_StepDown_LM2596")
+		(at 83.82 135.89 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c65fa229-48f8-48fa-88e1-76aab7b91e03")
+		(property "Reference" "U1"
+			(at 83.82 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "YAAJ_DCDC_StepDown_LM2596"
+			(at 83.82 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "models:YAAJ_DCDC_StepDown_LM2596"
+			(at 82.55 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 82.55 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "module : adjustable step down module 3.2V-40V to 1.25V-35V 3A"
+			(at 83.82 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "560511a3-ab36-4a50-9d2b-8fab615ff8b8")
+		)
+		(pin "3"
+			(uuid "5d3817fb-964d-4067-9297-71eeacbc858b")
+		)
+		(pin "1"
+			(uuid "8cf01225-778c-433c-8264-ebe0c968f2a8")
+		)
+		(pin "2"
+			(uuid "1c6d44be-2393-4055-b0d2-2f1a025d3df1")
+		)
+		(instances
+			(project ""
+				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:LED")
 		(at 170.18 133.35 180)
 		(unit 1)
@@ -5554,78 +5500,6 @@
 			(project "rear_light"
 				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
 					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 45.72 50.8 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "cdf82421-b73a-4695-88e1-6b68e82f0edb")
-		(property "Reference" "ATtiny85_pwr1"
-			(at 40.132 45.72 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "Conn_01x03"
-			(at 40.386 47.752 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_1.00mm:PinHeader_1x03_P1.00mm_Vertical"
-			(at 45.72 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 45.72 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 45.72 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2dd635a7-dabd-4b4a-ade8-81ef0b7cbcd2")
-		)
-		(pin "3"
-			(uuid "78681083-e49a-4be6-98d2-9f5c5fe6d842")
-		)
-		(pin "2"
-			(uuid "76e1fd19-2c76-4d0c-b222-a9bdb35d0c98")
-		)
-		(instances
-			(project ""
-				(path "/b76567e8-d4a2-4d0a-93c6-1ddc496627b1"
-					(reference "ATtiny85_pwr1")
 					(unit 1)
 				)
 			)
