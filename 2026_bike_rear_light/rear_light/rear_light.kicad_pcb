@@ -124,7 +124,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 2.54 2.37 90)
+			(at 2.54 1 90)
 			(layer "F.Fab")
 			(uuid "ff2a38a3-e2b6-4e0c-b356-13e127e310b7")
 			(effects
@@ -718,7 +718,7 @@
 			)
 		)
 		(property "Value" "33k"
-			(at 2.54 2.37 90)
+			(at 2.5 1 90)
 			(layer "F.Fab")
 			(uuid "0b9efc12-4473-4b83-8296-e411abc6d03c")
 			(effects
@@ -2536,7 +2536,7 @@
 			(uuid "41216154-1caa-4555-a1b8-36e01726c8f4")
 		)
 		(fp_text user "REF**"
-			(at 21.59 8.89 90)
+			(at -0.5 2.5 90)
 			(layer "F.Fab")
 			(uuid "94b4dc47-9438-4963-943f-db524c192ca3")
 			(effects
@@ -3060,7 +3060,7 @@
 			)
 		)
 		(property "Value" "33k"
-			(at 3.81 2.37 0)
+			(at 5.5 0.5 0)
 			(layer "F.Fab")
 			(uuid "4d645c3e-5af0-44b3-9985-97a4e7cf8087")
 			(effects
@@ -3202,7 +3202,7 @@
 			(uuid "37d2054b-16ac-43ad-84d4-f12bc50392a2")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 0 0)
+			(at 2 -0.5 0)
 			(layer "F.Fab")
 			(uuid "2e99f5bb-0be5-4886-909a-9a9269413b94")
 			(effects
@@ -3263,7 +3263,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 2.54 2.37 90)
+			(at 2.54 1 90)
 			(layer "F.Fab")
 			(uuid "c3ee1479-a6a7-47f1-bd73-cfd90e300a81")
 			(effects
@@ -3642,7 +3642,7 @@
 		(descr "TO-220-3, Vertical, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf, generated with kicad-footprint-generator TO_SOT_THT_generate.py")
 		(tags "TO-220-3 Vertical RM 2.54mm")
 		(property "Reference" "Q7"
-			(at 2.54 -4.1 90)
+			(at 2.08 -2.5 90)
 			(layer "F.SilkS")
 			(uuid "8336c1c3-226d-4f8d-8bd4-c80c2628aeea")
 			(effects
@@ -3889,7 +3889,7 @@
 			)
 		)
 		(property "Value" "4k7"
-			(at 2.54 2.37 90)
+			(at 3 0 90)
 			(layer "F.Fab")
 			(uuid "8722a913-85f2-465c-b944-7c58e7191463")
 			(effects
@@ -4498,7 +4498,7 @@
 		(descr "TO-220-3, Vertical, RM 2.54mm, see https://www.vishay.com/docs/66542/to-220-1.pdf, generated with kicad-footprint-generator TO_SOT_THT_generate.py")
 		(tags "TO-220-3 Vertical RM 2.54mm")
 		(property "Reference" "Q2"
-			(at 2.54 -4.1 90)
+			(at 2.5 -2.5 90)
 			(layer "F.SilkS")
 			(uuid "35af898e-62fc-4590-8c8b-7729ff5e8e53")
 			(effects
@@ -4745,7 +4745,7 @@
 			)
 		)
 		(property "Value" "33k"
-			(at 3.81 2.37 0)
+			(at 5 0.5 0)
 			(layer "F.Fab")
 			(uuid "2e9a83d8-daf5-46fa-bc98-21f7e2392488")
 			(effects
@@ -4887,7 +4887,7 @@
 			(uuid "0924375d-0a9f-4715-bf64-c4c86f6fbc66")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 0 0)
+			(at 2.5 -0.5 0)
 			(layer "F.Fab")
 			(uuid "95f1f016-d5e4-423e-9818-e53c43d30221")
 			(effects
@@ -4948,7 +4948,7 @@
 			)
 		)
 		(property "Value" "33k"
-			(at 2.54 2.37 90)
+			(at 2.54 1 90)
 			(layer "F.Fab")
 			(uuid "ad2ad39d-5caa-4abf-b5d8-a6962f3e9fad")
 			(effects
@@ -5618,7 +5618,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 3.81 -2.37 0)
+			(at 5.5 0.5 0)
 			(layer "B.Fab")
 			(uuid "79419e10-4ea0-43f5-b533-e8ba71cac1d8")
 			(effects
@@ -5763,7 +5763,7 @@
 			(uuid "bfd7194f-56f5-4b55-b371-bd276a846860")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.81 0 0)
+			(at 2 0 0)
 			(layer "B.Fab")
 			(uuid "789ff6ee-711e-4cb1-b3ee-278af9c44798")
 			(effects
@@ -5826,7 +5826,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 3.81 -2.37 0)
+			(at 5.62 -2.37 0)
 			(layer "B.Fab")
 			(uuid "b171469e-6d15-4121-ab3a-12bf27547425")
 			(effects
