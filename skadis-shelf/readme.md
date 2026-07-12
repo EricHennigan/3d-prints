@@ -45,3 +45,27 @@ Beam parameters:
 
 Leaving the skadis_box.scad and skadis_parts.scad as leftover artifacts.
 Was trying to use them as a way to compose my own box with more peg holes.
+
+
+# Reference Values
+
+Shelf for Skadis Large Box
+  has to be split into slats because Centauri Carbon build dimensions too small
+  ideal depth would be 350, but already have printed many with depth of 250
+  so slat comes out to be depth 62 = floor(250/4)
+  but it needs to fit the IKEA dimensions (skadis is spaced at 20mm)
+  so slat comes out to be depth 59.5 mm (for some space).
+
+  (depth) upright width: 250, but chopped to 59.5 (see below code)
+  (width) beam length: 270
+
+Code change to `Mac Mini Shelf.stl`
+```
+  // color("Salmon", 1) front_beam_with_pegs(lower_beam_y, true, false);
+
+  intersection() {
+    front_beam_with_pegs(lower_beam_y, true, false);
+    rotate([0, 90, 0]) translate([135, 15, -2.5+37.5]) cube([310, 20, 59.5], center=true);
+  }
+```
+
