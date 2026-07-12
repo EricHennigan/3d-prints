@@ -13,20 +13,20 @@ Remix the files from the printables.com model [1315483](https://www.printables.c
 Published the remix to [printables.com](https://www.printables.com/model/1615395-customizable-ikea-components-parametric-connector).
 
 Original print was:
-  180mm deep, 8 cols
-  220mm tall, 10 rows
-  15mm wide, 1 col
+	180mm deep, 8 cols
+	220mm tall, 10 rows
+	15mm wide, 1 col
 
 Still agonizing over how to print the remaining shelves. For some reason, I have a hard time accepting that the existing prints might be junk.
 Let's just accept the fact that I should not design my own parts. And need to move on with printing.
 
 Upright parameters:
  - upright height: 220
- - upright width: 250
+ - upright width: 250  (note: 230 is better, because of the mirroring)
  - upright depth: 15
  - has_top_holes: true
  - has_bottom_holes: true
- - alternate: false
+ - alternate: true
 
 End cap parameters:
  - end cap height: 0
