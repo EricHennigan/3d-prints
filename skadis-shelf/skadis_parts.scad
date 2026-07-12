@@ -23,9 +23,63 @@ module skadis_peg_hole() {
   }
 }
 
+module skadis_peg_fill() {
+  union() {
+    translate([peg_tolerance, peg_tolerance])
+      square([peg_hole_width - 2 * peg_tolerance, peg_hole_height - 2 * peg_tolerance]);
+    translate([peg_hole_width / 2, 0])
+      circle(d=peg_hole_circle_d - 2 * peg_tolerance, $fn=30);
+    translate([peg_hole_width / 2, peg_hole_height])
+      circle(d=peg_hole_circle_d - 2 * peg_tolerance, $fn=30);
+  }
+}
+
 // [* Wall Parameters *]
 peg_spacing_x = 20;
 peg_spacing_y = 20;
+
+module skadis_wall(cols, rows, margin=[5, 15], alternate=false, top_holes=false, bottom_holes=false) {
+  thickness = 5;
+
+  // Wall dimensions derived from the pattern
+  width  = 2 * margin[0] + (cols - 1) * peg_spacing_x + peg_hole_width;
+  height = 2 * margin[1] + (rows - 1) * peg_spacing_y + peg_hole_height;
+
+  difference() {
+    cube([width, height, thickness]);
+
+    for (i = [0 : cols - 1]) {
+      x_pos = margin[0] + i * peg_spacing_x;
+      for (j = [0 : rows - 1]) {
+        if ((i + j + (alternate ? 0 : 1)) % 2 == 0) {
+          y_pos = margin[1] + j * peg_spacing_y;
+          translate([x_pos, y_pos, -0.01])
+            linear_extrude(height = thickness + 0.02)
+              skadis_peg_hole();
+        }
+      }
+    }
+
+    if (top_holes) {
+      for (i = [0 : cols - 1]) {
+        x_pos = margin[0] + i * peg_spacing_x;
+        y_pos = margin[1] + rows * peg_spacing_y;
+        translate([x_pos, y_pos, -0.01])
+          linear_extrude(height = thickness + 0.02)
+              skadis_peg_hole();
+      }
+    }
+    if (bottom_holes) {
+      for (i = [0 : cols - 1]) {
+        x_pos = margin[0] + i * peg_spacing_x;
+        y_pos = margin[1] - peg_spacing_y;
+        translate([x_pos, y_pos, -0.01])
+          linear_extrude(height = thickness + 0.02)
+              skadis_peg_hole();
+      }
+    }
+  }
+}
 
 // Note the margin[1] will be encroached by peg_hole_width/2 top and bottom
 module skadis_sparse_wall(cols, rows, margin=[5, 5], alternate=false, top_holes=false, bottom_holes=false) {
@@ -94,3 +148,55 @@ module skadis_box(width, height, depth, top_holes=false, bottom_holes=false) {
 }
 //skadis_box(1, 13, 20, top_holes=true, bottom_holes=true);
 
+
+module skadis_crown_connection(cols, rows, margin=10) {
+  wall_width=peg_hole_width;
+  size_x = (cols - 1) * peg_spacing_x + peg_hole_width - peg_tolerance;
+  size_y = (rows - 1) * peg_spacing_y + peg_hole_width - peg_tolerance + 2*margin;
+
+  union() {
+    cube([size_x, size_y, peg_hole_height + peg_hole_width]);
+
+    for (i = [0 : cols - 1]) {
+      translate([i * peg_spacing_x, 0, wall_width/2])
+        rotate([90, 0, 0])
+        linear_extrude(height = wall_width)
+          skadis_peg_fill();
+      translate([i * peg_spacing_x, size_y+wall_width, wall_width/2])
+        rotate([90, 0, 0])
+        linear_extrude(height = wall_width)
+          skadis_peg_fill();
+    }
+    for (i = [0 : rows - 1]) {
+      translate([-wall_width, margin + i * peg_spacing_y, wall_width/2])
+        rotate([90, 0, 90])
+        linear_extrude(height = wall_width)
+          skadis_peg_fill();
+      translate([size_x, margin + i * peg_spacing_y, wall_width/2])
+        rotate([90, 0, 90])
+        linear_extrude(height = wall_width)
+          skadis_peg_fill();
+    }
+  }
+}
+//translate([5, 5, -peg_hole_height + 5/2]) skadis_crown_connection(1, 8);
+
+/*
+module skadis_peg() {
+  z_offset = 10 + (peg_width + peg_tolerance) / 2 + i * horizontal_peg_spacing;
+  // Small base rectangle
+  translate([0, -5, z_offset - peg_width / 2])
+    cube([lower_peg_h, 5, peg_width]);
+  // Cylinder stem between base and tall rectangle
+  translate([0, 0, z_offset])
+    rotate([0, 90, 0])
+      cylinder(h=lower_peg_h, r=peg_diameter / 2, $fn=30);
+  // Peg at tall rectangle on top
+  translate([lower_peg_h, 5.5, z_offset])
+    rotate([0, 90, 0])
+      cylinder(h=upper_peg_thickness, r=peg_diameter / 2, $fn=30);
+  // Tall rectangle on top
+  translate([lower_peg_h, -5, z_offset - peg_width / 2])
+    cube([upper_peg_thickness, 10.5, peg_width]);
+}
+*/
