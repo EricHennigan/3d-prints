@@ -7,7 +7,7 @@ use <skadis_parts.scad>
 
 box_width = 1;   // in peg units
 box_height = 13; // in peg units
-box_depth = 20;  // in peg units
+box_depth = 24;  // in peg units
 include_top_holes = true;
 include_bottom_holes = true;
 
@@ -19,3 +19,6 @@ skadis_box(
     top_holes = include_top_holes,
     bottom_holes = include_bottom_holes
 );
+
+translate([5, 5, -16])
+skadis_crown_connection(1, 12, margin=10);

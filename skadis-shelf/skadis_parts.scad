@@ -98,7 +98,7 @@ module skadis_sparse_wall(cols, rows, margin=[5, 5], alternate=false, top_holes=
       x_pos = margin[0] + i * peg_spacing_x/2;
       for (j = [0 - int(bottom_holes) : (rows - 1)/2 + int(top_holes)]) {
         y_pos = margin[1] + j * peg_spacing_y;
-        
+
         translate([x_pos, y_pos, -0.01])
           linear_extrude(height = thickness + 0.02)
             skadis_peg_hole();
@@ -108,7 +108,7 @@ module skadis_sparse_wall(cols, rows, margin=[5, 5], alternate=false, top_holes=
       x_pos = margin[0] + i * peg_spacing_x/2;
       for (j = [1 - int(bottom_holes) : rows/2 + int(top_holes)]) {
         y_pos = margin[1] + j * peg_spacing_y - peg_spacing_y/2;
-          
+
         translate([x_pos, y_pos, -0.01])
           linear_extrude(height = thickness + 0.02)
             skadis_peg_hole();
@@ -152,7 +152,7 @@ module skadis_box(width, height, depth, top_holes=false, bottom_holes=false) {
 module skadis_crown_connection(cols, rows, margin=10) {
   wall_width=peg_hole_width;
   size_x = (cols - 1) * peg_spacing_x + peg_hole_width - peg_tolerance;
-  size_y = (rows - 1) * peg_spacing_y + peg_hole_width - peg_tolerance + 2*margin;
+  size_y = (rows - 1) * peg_spacing_y + peg_hole_width - peg_tolerance + margin;
 
   union() {
     cube([size_x, size_y, peg_hole_height + peg_hole_width]);
@@ -162,11 +162,17 @@ module skadis_crown_connection(cols, rows, margin=10) {
         rotate([90, 0, 0])
         linear_extrude(height = wall_width)
           skadis_peg_fill();
-      translate([i * peg_spacing_x, size_y+wall_width, wall_width/2])
+    }
+    // Alternation math, because I did not update this
+    // when I changed the peg counting for skadis_sparse_wall
+    is_int = 1 - (rows * 2) % 2;
+    for (i = [0 : 1 : cols - 1 - 1 * is_int]) {
+      translate([(i + 0.5 * is_int) * peg_spacing_x, size_y+wall_width, wall_width/2])
         rotate([90, 0, 0])
         linear_extrude(height = wall_width)
           skadis_peg_fill();
     }
+
     for (i = [0 : rows - 1]) {
       translate([-wall_width, margin + i * peg_spacing_y, wall_width/2])
         rotate([90, 0, 90])

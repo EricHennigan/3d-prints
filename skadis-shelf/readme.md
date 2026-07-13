@@ -41,11 +41,6 @@ Beam parameters:
  - add beam ventilation: false
  - alternate pattern: true
 
-# NEXT
-
-Leaving the skadis_box.scad and skadis_parts.scad as leftover artifacts.
-Was trying to use them as a way to compose my own box with more peg holes.
-
 
 # Reference Values
 
@@ -68,4 +63,18 @@ Code change to `Mac Mini Shelf.stl`
     rotate([0, 90, 0]) translate([135, 15, -2.5+37.5]) cube([310, 20, 59.5], center=true);
   }
 ```
+
+Decided that the correct dimensions for the sparse walls are
+ h = 13 peg units
+ d = 24 peg units
+
+# NEXT
+
+Leaving the skadis_box.scad and skadis_parts.scad as leftover artifacts.
+Was trying to use them as a way to compose my own box with more peg holes.
+
+TODO: After migrating to the `skadis_spare_wall`, the `skadis_box` doesn't
+      correctly handle width of 2 or 3.
+TODO: need to update the `skadis_crown_connection` so that it takes the same
+      hole counts as the current `skadis_box` using the `skadis_sparse_wall`.
 
