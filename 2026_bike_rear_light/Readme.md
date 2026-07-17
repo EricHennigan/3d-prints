@@ -217,3 +217,49 @@ Do not plug it in until prompted by the 'upload' step
 arduino-cli compile --fqbn digistump:avr:digispark-tiny code.ino
 arduino-cli upload --fqbn digistump:avr:digispark-tiny code.ino
 ```
+
+# Thu Jul 16 22:33:32 PDT 2026
+
+Was trying to debug the circuit and made some important discoveries:
+ - I thought that the VIN
+
+Some of the pins are not available for me to use as a sensor. Specifically, I
+cannot have anything on PB5, because that's the RESET pin for the ATTiny. It
+won't boot (will be held in reset) if it senses anything.
+
+So new wiring:
+
+| Pin | Code | Purpose |
+|-----|------|---------|
+|  6  | PB5  | Unused - leave disconnected so chip can boot |
+|  5  | PB4  | PWR_CONTROL - drives the power input transistor Q6 |
+|  4  | PB3  | Unused - leave disconnected to avoid the 1.5k USB pull-up resistor conflict |
+|  3  | PB2  | BRAKE_LIGHT |
+|  2  | PB1  | TAIL_LIGHT |
+|  1  | PB0  | SYS_PWR_READ - reads the brake line via 10k resistor |
+
+Also I think I broke the chip by over-voltaging it. The board has its own power
+regulator, but I was really confused about which pin that would be. I supplied
+7.5v to the Vin pin of the ATTiny (online it said to use between 7v and 12v).
+
+To avoid burning out the ATTiny in the future check:
+1. "Resistance-to-Rail"
+   power off, no chip
+   measure PB4 to BATT, expect: open loop
+   measure PB4 to SYS, expect: open loop
+   measure PB4 to Mosfet Q4 (pwr control), expect: R9+R7+R6 (high resistance)
+2. "Inline Current Limiting"
+   power off, no chip
+   confirm 10k R9 sits between PB4 and transistor Q6 base
+   measure PB4 to base of Q6, expect: 10k
+3. "Safe Simulation"
+   power on, no chip
+   measure volts on PB4, expect: 0v (because no driver)
+   pull up test, connect PB4 to 5v with 10k resistor
+     should activate Q6, Q5, Q4, turning on SYS power
+   measure current flowing through tmp resistor or check that PB4 stays stable near 5v
+4. "Code Safety Rule"
+   always declare pin mode as OUTPUT, before attempting any digitalWrite
+   avoid rapid toggling at boot in setup(), wait a sec for USB handshake to finish
+
+Consider setting PB4 mode as INPUT_PULLUP, expecting the brake to override it

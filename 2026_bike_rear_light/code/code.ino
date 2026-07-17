@@ -1,9 +1,34 @@
 
 // Pin assignments                Digispark silkscreen labels
-const int PIN_TAIL_LIGHT  = 1; // PB1 — tail light output
-const int PIN_BRAKE_LIGHT = 2; // PB2 — brake light output
-const int PIN_BRAKE_SENSE = 3; // PB3 — brake input (LOW = engaged)
-const int PIN_POWER       = 5; // PB5 — power control
+const int PIN_BRAKE_SENSE = PB0; // brake input (LOW = engaged)
+const int PIN_LED         = PB1;
+const int PIN_TAIL_LIGHT  = PB1; // tail light output
+const int PIN_BRAKE_LIGHT = PB2; // brake light output
+const int PIN_POWER       = PB4; // power control
+
+
+// TESTING
+void setup() {
+  pinMode(PIN_BRAKE_SENSE, INPUT);
+  pinMode(PIN_TAIL_LIGHT, OUTPUT);
+  pinMode(PIN_BRAKE_LIGHT, OUTPUT);
+  pinMode(PIN_POWER, OUTPUT);
+
+  digitalWrite(PIN_POWER, HIGH);
+}
+
+void loop() {
+  static int counter = 0;
+  counter++;
+  if (counter > 30) digitalWrite(PIN_POWER, LOW);
+
+  bool braking = (digitalRead(PIN_BRAKE_SENSE) == LOW);
+  pinMode(PIN_BRAKE_LIGHT, braking);
+
+  delay(1500);
+}
+
+/* DESIRED BRAKE PROGRAM
 
 // Timing
 const unsigned long POLL_INTERVAL_MS = 20; // 50Hz
@@ -15,10 +40,11 @@ void setup() {
 
  pinMode(PIN_TAIL_LIGHT,  OUTPUT);
  pinMode(PIN_BRAKE_LIGHT, OUTPUT);
- pinMode(PIN_BRAKE_SENSE, INPUT_PULLUP);
+ pinMode(PIN_BRAKE_SENSE, INPUT);
  pinMode(PIN_POWER,       OUTPUT);
 
- digitalWrite(PIN_TAIL_LIGHT, HIGH);  // tail light on at boot
+ // Set initial lights and toggle power state
+ digitalWrite(PIN_TAIL_LIGHT, HIGH);
  digitalWrite(PIN_BRAKE_LIGHT, LOW);
  digitalWrite(PIN_POWER, HIGH);
 }
@@ -42,4 +68,4 @@ void loop() {
 
   delay(POLL_INTERVAL_MS);
 }
-
+*/
