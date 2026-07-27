@@ -263,3 +263,12 @@ To avoid burning out the ATTiny in the future check:
    avoid rapid toggling at boot in setup(), wait a sec for USB handshake to finish
 
 Consider setting PB4 mode as INPUT_PULLUP, expecting the brake to override it
+
+# Box Design
+
+Sun Jul 26 16:10:12 PDT 2026
+
+Major PITA.
+Also, did not leave enough room for the ATTiny. Ugh!
+So used the entire! day redrawing the box and lid
+
