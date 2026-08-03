@@ -8,6 +8,7 @@ const int PIN_POWER       = PB4; // power control
 
 
 // TESTING
+/*
 void setup() {
   pinMode(PIN_BRAKE_SENSE, INPUT);
   pinMode(PIN_TAIL_LIGHT, OUTPUT);
@@ -27,8 +28,9 @@ void loop() {
 
   delay(1500);
 }
+*/
 
-/* DESIRED BRAKE PROGRAM
+// DESIRED BRAKE PROGRAM
 
 // Timing
 const unsigned long POLL_INTERVAL_MS = 20; // 50Hz
@@ -68,4 +70,3 @@ void loop() {
 
   delay(POLL_INTERVAL_MS);
 }
-*/

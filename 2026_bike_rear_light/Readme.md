@@ -218,7 +218,7 @@ arduino-cli compile --fqbn digistump:avr:digispark-tiny code.ino
 arduino-cli upload --fqbn digistump:avr:digispark-tiny code.ino
 ```
 
-# Thu Jul 16 22:33:32 PDT 2026
+# 2026-07-16 Circuit Debugging, Broken ATtiny
 
 Was trying to debug the circuit and made some important discoveries:
  - I thought that the VIN
@@ -264,11 +264,27 @@ To avoid burning out the ATTiny in the future check:
 
 Consider setting PB4 mode as INPUT_PULLUP, expecting the brake to override it
 
-# Box Design
-
-Sun Jul 26 16:10:12 PDT 2026
+# 2026-07-26 Box Design
 
 Major PITA.
 Also, did not leave enough room for the ATTiny. Ugh!
 So used the entire! day redrawing the box and lid
+
+# 2026-08-01 Assembly on the bike
+
+I got the brake & tail lights wired in wrong.
+Swapping the pins on the molex worked.
+
+It sparks when I plug it in. After that it doesn't turn off.
+
+# 2026-08-02 Circuit Adjustments
+
+At lower voltages, ~20v the circuit operates as expected.
+But then at higher voltages, ~50v BATT, it fries the mosfet.
+
+Attempted to put a zener diode across the Gate & Source, but that did not work.
+I think that we can use the enable/disable pin on the buck converter instead.
+Worked with Gemini to come up with a new circuit for that.
+
+
 
