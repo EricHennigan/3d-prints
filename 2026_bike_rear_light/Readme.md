@@ -286,5 +286,19 @@ Attempted to put a zener diode across the Gate & Source, but that did not work.
 I think that we can use the enable/disable pin on the buck converter instead.
 Worked with Gemini to come up with a new circuit for that.
 
+# 2026-08-04 Buck Converter Failed
 
+After much investigation at CrashSpace today. It turns out the DC-DC Buck
+Converter that I got does not handle the high input voltages, even though I got
+the HVS version. Could be a cheap clone?  I'll have to look into a new circuit
+design to accommodate a different Buck Converter (e.g.: a B560C has inverted
+logic for the enable/disable pin).
 
+# 2026-08-08 Rewire Circuit for new Buck Converter
+
+Bought a HT7886 DC-DC converter, because rated at 100V input (beyond what I need)
+ - Implemented a new KiCad symbol for it
+ - Drew a footprint for it
+ - Gemini conversation to update the schematic (because EN high == on)
+
+Due to redesign, I need a ~5v zener diode. Hope that crash has one.
