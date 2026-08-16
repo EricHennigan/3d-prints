@@ -302,3 +302,13 @@ Bought a HT7886 DC-DC converter, because rated at 100V input (beyond what I need
  - Gemini conversation to update the schematic (because EN high == on)
 
 Due to redesign, I need a ~5v zener diode. Hope that crash has one.
+
+# 2026-08-15 Recieved the new DC-DC converter
+
+- Checked that it behaves as expected, does not turn on at up to 60v
+- Also checked output with an oscilloscope, very stable at 5v
+- De-soldered previous circuit
+- Soldered in parts new circuit
+  - Check Crashspace diodes were suitable (got lucky!)
+  - Used breadboard to verify behavior (it works!)
+  Did not solder all the connections, it was already 4hrs work, got tired
