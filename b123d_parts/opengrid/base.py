@@ -42,7 +42,7 @@ class SnapCutter(BasePartObject):
         self.side_tool = side_tool.part
 
         adj = (constants.UNIT - shrink) / math.sqrt(2)
-        pts = [(x-adj, z) for x,z, in self.corner_profile]
+        pts = [(x-adj, z) for x,z in self.corner_profile]
         with BuildPart() as corner_tool:
             with BuildSketch(Plane.YZ.rotated((0,0,45))):
                 with BuildLine():
