@@ -8,6 +8,8 @@ import math
 
 from build123d import *
 
+import align
+
 from . import constants
 
 class Bump(BasePartObject):
@@ -51,7 +53,7 @@ class Snap(BasePartObject):
     ]
     size = constants.UNIT - 3.2
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         adj = (constants.UNIT - self.shrink) / math.sqrt(2)
         pts = [(x-adj, z) for x,z in self.corner_profile]
         with BuildPart() as corner_tool:
@@ -63,19 +65,19 @@ class Snap(BasePartObject):
         self.corner_tool = corner_tool.part
         self.corner_tool.color = constants.CUTTER_COLOR
 
-        self.slot_tool = SlotCutter(align=constants.Align_CFB)\
+        self.slot_tool = SlotCutter(align=Align.CKB, mode=Mode.PRIVATE)\
             .moved(Location((0, self.size/2, 0)))
-        self.bump_part = Bump(align=constants.Align_CKT)\
+        self.bump_part = Bump(align=Align.CFT, mode=Mode.PRIVATE)\
             .moved(Location((0, self.size/2, self.height-1.4)))
 
         with BuildPart() as cutter:
-            Box(self.size, self.size, self.height, align=constants.Align_CCB)
+            Box(self.size, self.size, self.height, align=Align.CCB)
             with PolarLocations(0, 4, angular_range=360, rotate=True):
                 add(corner_tool.part, mode=Mode.SUBTRACT)
                 add(self.slot_tool, mode=Mode.SUBTRACT)
                 add(self.bump_part, mode=Mode.ADD)
 
-        super().__init__(cutter.part)
+        super().__init__(cutter.part, **kwargs)
 
 
 if __name__ == "__main__":
